@@ -58,3 +58,14 @@ Content-Type: application/json
 ### DELETE EVENT
 
 DELETE {{endpoint}}/events/54
+
+
+### CREATE DRAW
+
+POST {{endpoint}}/draws
+Content-Type: application/json
+{
+  "event_id": 3,
+  "giver_id": 1,
+  "receiver_id": 3
+}
