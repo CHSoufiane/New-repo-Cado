@@ -1,4 +1,6 @@
 import User from '../models/User.js';
+import generateToken from '../controllers/auth.controller.js';
+
 
 export default {
     async createUser(req, res) {
@@ -19,7 +21,7 @@ export default {
                 email,
                 password,
                 is_registered: true,
-                token: 'your-jwt-token'
+                token: generateToken
             });
     
             return res.status(201).json(user);

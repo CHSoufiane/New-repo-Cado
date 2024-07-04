@@ -1,14 +1,15 @@
 import 'dotenv/config'; 
+import { hash, compare } from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import User from '../models/User.js';
 
-// Import necessary modules
 
 // Register a new user
 export default {
     async register(req, res) {
         try {
             // Extract user data from request body
-            const { username, password } = req.body;
+            const { name, mail, password } = req.body;
 
             // Check if user already exists
             const existingUser = await findOne({ username });
@@ -35,7 +36,7 @@ export default {
         }
     },
 
-    // Login an existing user
+// Login an existing user
     async login(req, res) {
         try {
             // Extract user data from request body
@@ -54,8 +55,8 @@ export default {
             }
 
             // Authenticate the user with token
-            if (user) {
-                jwt.sign({ username, password }, process.env.REFRESH_TOKEN_SECRET)};
+            // if (???) {
+            //    jwt.sign({ username, password }, };
 
             // Generate refresh token
             const refreshToken = jwt.sign({ username, password }, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '7d'});
