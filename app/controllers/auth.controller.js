@@ -1,4 +1,4 @@
-import { hash, compare } from 'bcrypt';
+import 'dotenv/config'; 
 import jwt from 'jsonwebtoken';
 
 // Import necessary modules
@@ -24,12 +24,14 @@ export default {
             await newUser.save();
 
             // Generate a JWT token
-            const token = sign({ userId: newUser._id }, 'your-secret-key');
+            const generateToken = jwt.sign({ username, password }, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '1h'});
+            res.json({generateToken: generateToken});
 
             // Return the token
-            res.status(201).json({ token });
+            res.status(201).json({ accessToken });
         } catch (error) {
             res.status(500).json({ message: 'Internal server error' });
+
         }
     },
 
@@ -51,14 +53,28 @@ export default {
                 return res.status(401).json({ message: 'Invalid password' });
             }
 
-            // Generate a JWT token
-            const token = sign({ userId: user._id }, 'your-secret-key');
+            // Authenticate the user with token
+            if (user) {
+                jwt.sign({ username, password }, process.env.REFRESH_TOKEN_SECRET)};
+
+            // Generate refresh token
+            const refreshToken = jwt.sign({ username, password }, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '7d'});
+            res.json({refreshToken: refreshToken});
 
             // Return the token
             res.status(200).json({ token });
         } catch (error) {
             res.status(500).json({ message: 'Internal server error' });
         }
-    }
-}
+    },
 
+    async token (req, res) {
+        const token = req.body.token;
+        if(!token) {
+            return  res.status(401).json({ message: 'Invalid token' });
+        }
+
+        const accessToken = await generateToken({ username, password });
+        res.json({ accessToken });
+    }
+};

@@ -69,3 +69,23 @@ Content-Type: application/json
   "giver_id": 1,
   "receiver_id": 3
 }
+
+###
+
+OST {{endpoint}}/login
+cotent-Type: application/json
+
+{
+    "username": "jack",
+    "password": "123"
+}
+
+###
+
+POST {{endpoint}}/register
+cotent-Type: application/json
+
+{
+    "username": "jack",
+    "password": "123"
+}
