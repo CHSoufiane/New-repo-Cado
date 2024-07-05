@@ -7,9 +7,8 @@ import event_router from './app/routers/event.router.js';
 
 const app = express();
 
-<<<<<<< HEAD
 app.use(express.urlencoded());
-=======
+
 app.use(
     cors({
         origin: [
@@ -26,8 +25,6 @@ app.use(
     })
 );
 
-
->>>>>>> origin/feat/auth
 app.use(express.json());
 app.use(user_router);
 app.use(auth_router);
