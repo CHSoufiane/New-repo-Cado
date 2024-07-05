@@ -1,6 +1,7 @@
 import { hash, compare } from 'bcrypt';
 import jwt from 'jsonwebtoken';
-
+import 'dotenv/config';
+import User from '../models/User.js';
 // Import necessary modules
 
 // Register a new user
@@ -8,27 +9,39 @@ export default {
     async register(req, res) {
         try {
             // Extract user data from request body
-            const { username, password } = req.body;
+            const { name, email, password } = req.body;
 
             // Check if user already exists
-            const existingUser = await findOne({ username });
+            const existingUser = await User.findOne({ 
+                where: { email } 
+            });
             if (existingUser) {
-                return res.status(400).json({ message: 'Username already taken' });
+                return res.status(400).json({ message: 'email already exists' });
             }
 
             // Hash the password
             const hashedPassword = await hash(password, 10);
 
+            // Generate a JWT token linked to the email
+            const token = jwt.sign({ email: email }, `${process.env.JWT_SECRET_KEY}`);
+
             // Create a new user
-            const newUser = new User({ username, password: hashedPassword });
-            await newUser.save();
-
-            // Generate a JWT token
-            const token = sign({ userId: newUser._id }, 'your-secret-key');
-
+            const newUser = User.create({ 
+                name,
+                email,
+                password: hashedPassword,
+                is_registered: true,
+                token: token
+            });
+            
             // Return the token
-            res.status(201).json({ token });
+            res.status(201).json({ 
+                message: 'User registered',
+                user: newUser,
+                token
+            });
         } catch (error) {
+            console.error(error.message);
             res.status(500).json({ message: 'Internal server error' });
         }
     },
