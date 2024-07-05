@@ -1,5 +1,5 @@
-// ALGORITHME DE FISHER-YATES
-
+const eventUser = [anais, yoan, yanis, estelle, soufiane];
+console.log(eventUser);
 
 function draw(eventUser) {
     for (let i = eventUser.length - 1; i > 0; i--) {
