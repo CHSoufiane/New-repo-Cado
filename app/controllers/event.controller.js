@@ -1,4 +1,5 @@
 import Event from '../models/Event.js';
+import Event_user from '../models/Event_user.js';
 
 const eventController = {
 
@@ -37,7 +38,6 @@ const eventController = {
             res.status(500).json({ message: 'Internal server error' });
         }
      
-
     },
 
     async getEvents (req, res) {
