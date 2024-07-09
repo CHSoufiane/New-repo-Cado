@@ -55,9 +55,9 @@ POST {{endpoint}}/events
 Content-Type: application/json
 
 {
-    "name": "Event 1",
+    "name": "Evenement test numéro 182",
     "date": "2021-09-01",
-    "organizer_id": 1
+    "organizer_id": 5
 }
 
 ### UPDATE EVENT
