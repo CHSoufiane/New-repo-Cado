@@ -17,16 +17,16 @@ Content-Type: application/json
 GET {{endpoint}}/users
 
 ### GET ONE USER
-GET {{endpoint}}/users/1
+GET {{endpoint}}/users/3
 
 ### CREATE USER
 POST {{endpoint}}/users
 Content-Type: application/json
 
 {
-  "name": "Yanis",
-  "email": "yadnis@gneeail.com",
-  "password": "test"
+  "name": "Jojo Doe",
+  "email": "JojoDoe@gnail.com",
+  "password": "123456"
 }
 ### UPDATE USER
 
