@@ -1,11 +1,11 @@
 @endpoint=http://localhost:{{$dotenv PORT}}
-
-### DRAW
-GET {{endpoint}}/draw
-
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inlhbmlpcy43ODVAZ21haWwuY29tIiwiaWF0IjoxNzIwNDQxMTE2fQ.S1bL_8DPbXVrkmRstPiNWpuxoiMo_gJwvaVCcSrXiUY
 
 ###ME
 GET {{endpoint}}/me
+
+###DRAW
+GET {{endpoint}}/draw
 
 ###LOGIN
 POST {{endpoint}}/login
@@ -22,7 +22,7 @@ Content-Type: application/json
 
 {
   "name": "Yanis",
-  "email": "yaniis.785@gmail.com",
+  "email": "yani.is.785@gmail.com",
   "password": "test"
 }
 
@@ -60,7 +60,7 @@ DELETE {{endpoint}}/users/20
 
 
 ### EVENTS
-GET {{endpoint}}/events/
+GET {{endpoint}}/events
 
 
 ### CREATE EVENT
