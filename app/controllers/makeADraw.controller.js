@@ -1,7 +1,22 @@
-const eventUser = [anais, yoan, yanis, estelle, soufiane];
-console.log(eventUser);
+import { allEvents} from "./eventController";
 
-function shuffle(eventUser) {
+export const makeADraw = async (req, res) => {
+    const getUsersNames = allEvents.map(event => {
+                const participants = event.participants.map(user => ({
+                    name: user.name,
+                    email: user.email
+                }));
+                return {
+                    ...event.toJSON(),
+                    participants
+                };
+            });
+
+            return res.status(200).json(getUsersNames);
+        } catch (error) {}
+            res.status(500).json({ message: 'Internal server error' });
+    }
+function shuffle() {
     for (let i = eventUser.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [eventUser[i], eventUser[j]] = [eventUser[j], eventUser[i]];

@@ -18,15 +18,24 @@ async createEvent (req, res) {
     }
 },
 
-    async getEvents (req, res) {
-        try {
-            const allEvents = await Event.findAll();
-            return res.status(200).json(allEvents);
-        }
-        
-        catch (error) { res.status(500).json({ message: 'Internal server error' });
-        }
-    },
+async getEvents (req, res) {
+    try {
+        const allEvents = await Event.findAll({
+            include: {
+                model: User,
+                as: 'participants',
+                through: { attributes: [] },
+                attributes: ['name', 'email']
+            }
+        });
+        return res.status(200).json(allEvents);
+    }
+    
+    catch (error) {
+        console.error(error.message);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+},
 
     async getOneEvent (req, res) {
         try {
