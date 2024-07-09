@@ -41,7 +41,8 @@ Content-Type: application/json
 {
     "name": "Event 1",
     "date": "2021-09-01",
-    "organizer_id": 1
+    "organizer_id": 1,
+    "participants": ["yanis", "estelle", "yoan", "anais", "soufiane"]
 }
 
 ### UPDATE EVENT

@@ -6,7 +6,7 @@ import event_router from './app/routers/event.router.js';
 
 const app = express();
 
-app.use(express.urlencoded());
+app.use(express.urlencoded({extended: true}))
 app.use(express.json());
 app.use(user_router);
 app.use(auth_router);
