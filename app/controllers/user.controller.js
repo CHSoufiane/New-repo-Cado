@@ -29,7 +29,22 @@ export default {
             res.status(500).json({ message: 'Internal server error' });         
         }
     },
+    async getUser(req, res) {
+        const { id } = req.params;
 
+        try {
+            const user = await User.findByPk(id);
+
+            if (!user) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+
+            return res.json(user);
+
+        } catch (error) {
+            return res.status(500).json({ message: 'Internal server error' });
+        };
+    },
     async getUsers(req, res) {
         try {
             const users = await User.findAll();

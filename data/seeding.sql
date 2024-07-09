@@ -1,4 +1,3 @@
-BEGIN;
 
 INSERT INTO
     "user" ("name", "email", "password", "is_registered", "token")
@@ -28,6 +27,3 @@ VALUES
     (1, 2),
     (1, 3),
     (1, 4);
-
-
-COMMIT;

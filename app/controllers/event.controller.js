@@ -93,4 +93,5 @@ async getEvents (req, res) {
     },
 };
 
-export default eventController
+
+export default eventController;
