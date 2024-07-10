@@ -1,5 +1,5 @@
 import { Event, User } from "../models/index.js";
-import Draw from "../services/draw.js";
+import Draw from "../models/Draw.js";
 
 const drawController = {
   async createDraw(req, res) {
