@@ -11,6 +11,7 @@ router.get('/events/:id', eventController.getOneEvent);
 router.put('/events/:id', eventController.updateEvent);
 router.delete('/events/:id', eventController.deleteEvent);
 
+router.get('/events/:id/Draw', eventController.eventDraw);
 
 
 export default router;
