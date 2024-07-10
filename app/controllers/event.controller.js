@@ -90,6 +90,67 @@ const eventController = {
       res.status(500).json({ message: "Internal server error" });
     }
   },
+
+  async eventDraw(req, res) {
+    const eventId = req.params.id;
+
+    try {
+      const event = await Event.findByPk(eventId, {
+        include: {
+          model: User,
+          as: "participants",
+          through: { attributes: [] },
+          attributes: ["name"],
+        },
+      });
+
+      if (!event) {
+        return res.status(404).json({ message: "Event not found" });
+      }
+
+      const participants = event.participants.map((user) => user.name);
+
+      const draw = draw(participants);
+
+      return res.status(200).json({ draw });
+    } catch (error) {
+      res.status(500).json({ message: "Internal server error" });
+    }
+
+    function draw(participants) {
+      if (participants.length < 2) {
+        throw new Error(
+          "désolé, il doit y avoir au minimum 2 personnes pour faire un tirage"
+        );
+      }
+
+      let givers = [...participants]; // Spread Syntax
+      let receivers = shuffle([...participants]);
+
+      // No one can give a gift to himself
+      for (let i = 0; i < givers.length; i++) {
+        if (givers[i] === receivers[i]) {
+          return draw(participants);
+        }
+      }
+
+      for (let i = 0; i < givers.length; i++) {
+        for (let j = 0; j < receivers.length; j++) {
+          if (givers[i] === receivers[j] && givers[j] === receivers[i]) {
+            return draw(participants);
+          }
+        }
+      }
+
+      // configure a pair of giver and receiver
+      let pairs = {};
+      for (let i = 0; i < givers.length; i++) {
+        pairs[givers[i]] = receivers[i];
+      }
+
+      return pairs;
+    }
+  },
 };
 
 export default eventController;
