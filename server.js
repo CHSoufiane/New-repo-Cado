@@ -26,7 +26,6 @@ app.use(
     })
 );
 
-
 app.use(express.json());
 app.use(user_router);
 app.use(auth_router);

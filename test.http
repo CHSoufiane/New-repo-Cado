@@ -2,6 +2,7 @@
 
 @token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inlhbmlpcy43ODVAZ21haWwuY29tIiwiaWF0IjoxNzIwNDQxMTE2fQ.S1bL_8DPbXVrkmRstPiNWpuxoiMo_gJwvaVCcSrXiUY
 
+                                  /// DRAW ///
 
 ### GET DRAWS
 GET {{endpoint}}/draws
@@ -48,7 +49,7 @@ Content-Type: application/json
   "password": "test"
 }
 
-                              /// USERS ///
+                                  /// USERS ///
 
 ### USERS
 GET {{endpoint}}/users
@@ -80,7 +81,7 @@ Content-Type: application/json
 DELETE {{endpoint}}/users/20
 
 
-                            /// EVENTS ///
+                                  /// EVENTS ///
 
 ### EVENTS
 GET {{endpoint}}/events/

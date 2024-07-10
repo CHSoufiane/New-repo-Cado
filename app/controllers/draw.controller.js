@@ -70,7 +70,13 @@ const drawController = {
       console.error(error.message);
       res.status(500).json({ message: "Internal server error" });
     }
-  },
+  }
+
+};
+
+export default drawController;
+
+
   // async drawParticipants(req, res) {
     
   //   function shuffle(participantsNames) {
@@ -111,6 +117,3 @@ const drawController = {
   //   }
 
   // },
-};
-
-export default drawController;
