@@ -133,6 +133,7 @@ const eventController = {
         }
       }
 
+      // 2 participants can't give a gift to each other
       for (let i = 0; i < givers.length; i++) {
         for (let j = 0; j < receivers.length; j++) {
           if (givers[i] === receivers[j] && givers[j] === receivers[i]) {
