@@ -110,9 +110,8 @@ const eventController = {
 
       const participants = event.participants.map((user) => user.name);
 
-      const draw = draw(participants);
-
-      return res.status(200).json({ draw });
+      const drawResult = draw(participants);
+      return res.status(200).json({ drawResult });
     } catch (error) {
       res.status(500).json({ message: "Internal server error" });
     }
