@@ -3,9 +3,28 @@
 @token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inlhbmlpcy43ODVAZ21haWwuY29tIiwiaWF0IjoxNzIwNDQxMTE2fQ.S1bL_8DPbXVrkmRstPiNWpuxoiMo_gJwvaVCcSrXiUY
 
 
-### DRAW
-GET {{endpoint}}/draw
+### GET DRAWS
+GET {{endpoint}}/draws
 
+### CREATE DRAW
+POST {{endpoint}}/draw
+
+{
+    "event_id": 3,
+    "giver_id": 4,
+    "receiver_id": 5,
+}
+
+### DELETE DRAW
+DELETE {{endpoint}}/draw/3
+
+### GET PARTICIPANTS
+GET {{endpoint}}/draw/3/participants
+
+### DRAW PARTICIPANTS
+GET {{endpoint}}/draw/3/draw
+
+                                  /// LOGIN ///
 
 ###ME
 GET {{endpoint}}/me
@@ -29,7 +48,7 @@ Content-Type: application/json
   "password": "test"
 }
 
-
+                              /// USERS ///
 
 ### USERS
 GET {{endpoint}}/users
@@ -61,6 +80,7 @@ Content-Type: application/json
 DELETE {{endpoint}}/users/20
 
 
+                            /// EVENTS ///
 
 ### EVENTS
 GET {{endpoint}}/events/

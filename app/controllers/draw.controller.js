@@ -38,25 +38,25 @@ const drawController = {
     }
   },
 
-  async updateDraw(req, res) {
-    const { id } = req.params;
-    const { event_id, giver_id, receiver_id } = req.body;
-    try {
-      const draw = await Draw.findByPk(id);
-      if (!draw) {
-        return res.status(404).json({ message: "Draw not found" });
-      }
+  // async updateDraw(req, res) {
+  //   const { id } = req.params;
+  //   const { event_id, giver_id, receiver_id } = req.body;
+  //   try {
+  //     const draw = await Draw.findByPk(id);
+  //     if (!draw) {
+  //       return res.status(404).json({ message: "Draw not found" });
+  //     }
 
-      await draw.update({
-        event_id,
-        giver_id,
-        receiver_id,
-      });
-      return res.status(200).json({ message: "Draw updated", draw });
-    } catch (error) {
-      res.status(500).json({ message: "Internal server error" });
-    }
-  },
+  //     await draw.update({
+  //       event_id,
+  //       giver_id,
+  //       receiver_id,
+  //     });
+  //     return res.status(200).json({ message: "Draw updated", draw });
+  //   } catch (error) {
+  //     res.status(500).json({ message: "Internal server error" });
+  //   }
+  // },
 
   async deleteDraw(req, res) {
     try {
