@@ -3,6 +3,16 @@
 @token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inlhbmlpcy43ODVAZ21haWwuY29tIiwiaWF0IjoxNzIwNDQxMTE2fQ.S1bL_8DPbXVrkmRstPiNWpuxoiMo_gJwvaVCcSrXiUY
 
 
+### CREATE DRAW
+GET {{endpoint}}/draws/1
+Content-Type: application/json
+
+{
+    "event_id": 3,
+    "giver_id": 4,
+    "receiver_id": 5
+}
+
 ### DRAW
 GET {{endpoint}}/draw/73
 

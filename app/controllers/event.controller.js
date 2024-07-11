@@ -1,7 +1,10 @@
-import { Event, User } from "../models/index.js";
-import jwt from "jsonwebtoken";
+import { Event, User } from '../models/index.js';
+import  Draw  from '../models/Draw.js';
+import  draw  from '../utils/draw.js';
+import sequelize from '../db/client-sequelize.js';
 
-export default {
+
+const eventController = {
   async createEvent(req, res) {
     const { name, date, organizer_id } = req.body;
     try {
@@ -87,7 +90,7 @@ export default {
       }
       return res.status(200).json(event);
     } catch (error) {
-      res.status(404).json({ message: "Event not found" });
+      res.status(500).json({ message: "Internal server error" });
     }
   },
 
@@ -119,10 +122,65 @@ export default {
       }
       await event.destroy();
       return res.json({
-        message: ` Event: ${event.id} / ${event.name} deleted`,
+        message: `Event: ${event.id} / ${event.name} deleted`,
       });
     } catch (error) {
       res.status(500).json({ message: "Internal server error" });
     }
   },
+
+  async eventDraw(req, res) {
+    const eventId = req.params.id;
+
+    try {
+      const event = await Event.findByPk(eventId, {
+        include: {
+          model: User,
+          as: "participants",
+          through: { attributes: [] },
+          attributes: ["id" ,"name"],
+        },
+      });
+
+      if (!event) {
+        return res.status(404).json({ message: "Event not found" });
+      }
+
+      const participantsNames = event.participants.map((user) => user.name);
+
+      const drawResult = draw(participantsNames);
+
+      const transaction = await sequelize.transaction();
+
+      try {
+        for (const [giverName, receiverName] of Object.entries(drawResult)){
+          const giver = event.participants.find((user) => user.name === giverName);
+          const receiver = event.participants.find((user) => user.name === receiverName);
+
+          if (giver && receiver){
+            await Draw.create({
+              event_id: eventId,
+              giver_id: giver.id,
+              receiver_id: receiver.id,
+            }, { transaction });
+          } else {
+            throw new Error(`User not found for giver: ${giverName} or receiver: ${receiverName}`);
+          }
+        }
+        await transaction.commit();
+        console.log('Draw successfully inserted');
+        return res.status(200).json({ drawResult });
+      } catch(error){
+        console.error(error.message);
+        return res.status(500).json({ message: "Internal server error" });
+      }
+
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ message: "Internal server error" });
+    }
+
+  },
 };
+
+export default eventController;

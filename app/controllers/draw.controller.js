@@ -1,7 +1,83 @@
 import { Event, User } from '../models/index.js';
+import  Draw  from '../models/Draw.js';
 
 
 const drawController = {
+  async createDraw(req, res) {
+    const { event_id, giver_id, receiver_id } = req.body;
+    try {
+      const draw = await Draw.create({
+        event_id,
+        giver_id,
+        receiver_id,
+      });
+      return res.status(201).json(draw);
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  },
+
+  async getDraws(req, res) {
+    try {
+      const allDraws = await Draw.findAll({
+        include: [
+          {
+            model: User,
+            as: "giver",
+            attributes: ["name"],
+          },
+          {
+            model: User,
+            as: "receiver",
+            attributes: ["name"],
+          },
+        ]
+      });
+      return res.status(200).json(allDraws);
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  },
+
+  async getOneDraw(req, res) {
+    try {
+      const draw = await Draw.findByPk(req.params.id,{
+        include: [
+          {
+            model: User,
+            as: "giver",
+            attributes: ["name"],
+          },
+          {
+            model: User,
+            as: "receiver",
+            attributes: ["name"],
+          },
+        ]
+      });
+      if (!draw) {
+        return res.status(404).json({ message: "Draw not found" });
+      }
+      return res.status(200).json(draw);
+    } catch (error) {
+      res.status(404).json({ message: "Draw not found" });
+    }
+  },
+
+  async deleteDraw(req, res) {
+    try {
+      const draw = await Draw.findByPk(req.params.id);
+      if (!draw) {
+        return res.status(404).json({ message: "Draw not found" });
+      }
+      await draw.destroy();
+      return res.json({ message: ` Draw: ${draw.id} / ${draw.name} deleted` });
+    } catch (error) {
+      res.status(500).json({ message: "Internal server error" });
+    }
+  },
   async getParticipantsFromAnEvent(req, res) {
     try {
       const event = await Event.findByPk(req.params.id,{
