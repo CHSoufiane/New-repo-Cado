@@ -108,28 +108,28 @@ const eventController = {
         return res.status(404).json({ message: "Event not found" });
       }
 
-      const participants = event.participants.map((user) => user.name);
+      const participantsNames = event.participants.map((user) => user.name);
 
-      const drawResult = draw(participants);
+      const drawResult = draw(participantsNames);
       return res.status(200).json({ drawResult });
     } catch (error) {
       res.status(500).json({ message: "Internal server error" });
     }
 
-    function draw(participants) {
-      if (participants.length < 2) {
+    function draw(participantsNames) {
+      if (participantsNames.length < 2) {
         throw new Error(
           "désolé, il doit y avoir au minimum 2 personnes pour faire un tirage"
         );
       }
 
-      let givers = [...participants]; // Spread Syntax
-      let receivers = shuffle([...participants]);
+      let givers = [...participantsNames]; // Spread Syntax
+      let receivers = shuffle([...participantsNames]);
 
       // No one can give a gift to himself
       for (let i = 0; i < givers.length; i++) {
         if (givers[i] === receivers[i]) {
-          return draw(participants);
+          return draw(participantsNames);
         }
       }
 
@@ -137,7 +137,7 @@ const eventController = {
       for (let i = 0; i < givers.length; i++) {
         for (let j = 0; j < receivers.length; j++) {
           if (givers[i] === receivers[j] && givers[j] === receivers[i]) {
-            return draw(participants);
+            return draw(participantsNames);
           }
         }
       }
