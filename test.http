@@ -9,6 +9,10 @@ Content-Type: application/json
 
 
 
+### GET DRAW BY USER
+GET {{endpoint}}/draws/user/:1
+
+
 ### DRAW
 GET {{endpoint}}/draw/73
 

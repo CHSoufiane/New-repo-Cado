@@ -127,6 +127,3 @@ const eventController = {
 };
 
 export default eventController;
-
-
-// GET DRAW FROM USER 
