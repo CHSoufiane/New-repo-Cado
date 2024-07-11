@@ -3,7 +3,6 @@ import Draw from "../models/Draw.js";
 import draw from "../utils/draw.js";
 
 const drawController = {
-
   async makeDraw(req, res) {
     const eventId = req.params.id;
 
@@ -93,7 +92,6 @@ const drawController = {
       console.error(error.message);
       res.status(500).json({ message: "Internal server error" });
     }
-
   },
 
   async getDraws(req, res) {
