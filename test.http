@@ -4,14 +4,10 @@
 
 
 ### CREATE DRAW
-GET {{endpoint}}/draws/1
+POST {{endpoint}}/events/78/draw
 Content-Type: application/json
 
-{
-    "event_id": 3,
-    "giver_id": 4,
-    "receiver_id": 5
-}
+
 
 ### DRAW
 GET {{endpoint}}/draw/73
