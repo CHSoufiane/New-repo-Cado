@@ -52,8 +52,8 @@ POST {{endpoint}}/users
 Content-Type: application/json
 
 {
-  "name": "Yanis",
-  "email": "yazazdnis@gneeail.com"
+  "name": "soufiane",
+  "email": "soufiane@gneeail.com"
 }
 ### UPDATE USER
 
