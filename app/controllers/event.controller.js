@@ -1,6 +1,4 @@
 import { Event, User } from '../models/index.js';
-import  Draw  from '../models/Draw.js';
-import  draw  from '../utils/draw.js';
 import sequelize from '../db/client-sequelize.js';
 import jwt from 'jsonwebtoken';
 
@@ -42,7 +40,7 @@ const eventController = {
         // Link user to the Event
         await event.addParticipants(user);
       }
-      await eventController.eventDraw({ params: { id: event.id } }, res);
+      await drawController.makeDraw({ params: { id: event.id } }, res);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Internal Server Error" });
