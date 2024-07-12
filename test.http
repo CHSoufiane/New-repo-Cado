@@ -88,16 +88,17 @@ Content-Type: application/json
 }
 ### ADD PARTICIPANTS TO EVENT
 
-PUT {{endpoint}}/events/2/participants
+POST {{endpoint}}/events/4/participants
+Content-Type: application/json
 
-{ "participants":
-    [
-      "yanis",
-      "estelle",
-      "soufiane",
-      "yoan",
-      "anais"
-    ]
+{
+      "name": "noel",
+      "date": "2021-09-01",
+      "organizer_id": 1,
+      "participants": 
+        [
+          {"name": "Yanis", "email": "yanis@gnail.com"}
+        ]
 }
 
 ### UPDATE EVENT

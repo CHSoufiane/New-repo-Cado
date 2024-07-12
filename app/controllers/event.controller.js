@@ -18,13 +18,13 @@ const eventController = {
       res.status(500).json({ message: "Internal server error" });
     }
   },
-  async createEventWithParticipants(req, res) {
+  async addParticipants(req, res) {
     const { name, date, participants, organizer_id} = req.body;
     try {
       const event = await Event.create({ name, date, organizer_id });
   
       // Add participants to the event
-      for (const participant of participants) {
+      for (const participant of Object.values(participants)) {
         let user = await User.findOne({ where: { email: participant.email } });
   
         if (!user) {
