@@ -4,7 +4,7 @@
 
 
 ### CREATE DRAW
-POST {{endpoint}}/events/78/draw
+POST {{endpoint}}/events/81/draw
 Content-Type: application/json
 
 
