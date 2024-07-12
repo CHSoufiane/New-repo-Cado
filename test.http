@@ -82,9 +82,22 @@ POST {{endpoint}}/events
 Content-Type: application/json
 
 {
-    "name": "Event 1",
+    "name": "noel",
     "date": "2021-09-01",
     "organizer_id": 1
+}
+### ADD PARTICIPANTS TO EVENT
+
+PUT {{endpoint}}/events/2/participants
+
+{ "participants":
+    [
+      "yanis",
+      "estelle",
+      "soufiane",
+      "yoan",
+      "anais"
+    ]
 }
 
 ### UPDATE EVENT
@@ -93,11 +106,11 @@ PUT {{endpoint}}/events/1
 Content-Type: application/json
 
 {
-    "name": "Event 42",
+    "name": "Event 2",
     "date": "2021-09-01",
-    "organizer_id": 3
+    "organizer_id": 1
 }
 
 ### DELETE EVENT
 
-DELETE {{endpoint}}/events/54
+DELETE {{endpoint}}/events/3
