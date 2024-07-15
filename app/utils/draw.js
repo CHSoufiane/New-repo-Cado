@@ -1,6 +1,7 @@
 import Draw from "../models/Draw.js";
 import { Event, User } from "../models/index.js";
 import sequelize from "../db/client-sequelize.js";
+import { getTestMessageUrl } from "nodemailer";
 
 function draw(participantsNames) {
   function shuffle(participantsNames) {
@@ -39,12 +40,12 @@ function draw(participantsNames) {
   }
 
   // configure a pair of giver and receiver
-  let pairs = {};
+  let ParticipantsPairs = {};
   for (let i = 0; i < givers.length; i++) {
     pairs[givers[i]] = receivers[i];
   }
 
-  return pairs;
+  return ParticipantsPairs;
 }
 
 async function getDraw(req, res) {
@@ -66,12 +67,16 @@ async function getDraw(req, res) {
 
     const participantsNames = event.participants.map((user) => user.name);
 
-    const drawResult = draw(participantsNames);
+    const createdDraw = getDraw(participantsNames);
+
+    const result = draw(createdDraw);
+
+    return res.status(200).json({drawResult, message: "Draw created"});
 
     const transaction = await sequelize.transaction();
 
     try {
-      for (const [giverName, receiverName] of Object.entries(drawResult)) {
+      for (const [giverName, receiverName] of Object.entries(result)) {
         const giver = event.participants.find(
           (user) => user.name === giverName
         );
@@ -96,7 +101,7 @@ async function getDraw(req, res) {
       }
       await transaction.commit();
       console.log("Draw successfully inserted");
-      return res.status(200).json({ drawResult });
+      return res.status(200).json({ result });
     } catch (error) {
       console.error(error.message);
       return res.status(500).json({ message: "Internal server error" });

@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get('/draws', drawController.getDraws);
 router.post('/events/:id/draw', drawController.makeDraw);
-router.get('/draws/user/:id', drawController.getDrawByUser)
+router.get('/draws/user/:id', drawController.getDrawByGiver)
 
 router.get('/draws/:id', drawController.getOneDraw);
 router.delete('/draws/:id', drawController.deleteDraw);

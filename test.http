@@ -4,13 +4,13 @@
 
 
 ### CREATE DRAW
-POST {{endpoint}}/events/81/draw
+POST {{endpoint}}/events/1/draw
 Content-Type: application/json
 
 
 
 ### GET DRAW BY USER
-GET {{endpoint}}/draws/user/:1
+GET {{endpoint}}/draws/user/1
 
 
 ### DRAW
@@ -88,18 +88,14 @@ Content-Type: application/json
 }
 ### ADD PARTICIPANTS TO EVENT
 
-POST {{endpoint}}/events/4/participants
+POST {{endpoint}}/events/2/participants
 Content-Type: application/json
 
-{
-      "name": "noel",
-      "date": "2021-09-01",
-      "organizer_id": 1,
-      "participants": 
-        [
-          {"name": "Yanis", "email": "yanis@gnail.com"}
-        ]
-}
+  {
+    "name": "Yanis", 
+    "email": "yanis@gnail.com"
+  }
+
 
 ### UPDATE EVENT
 

@@ -1,6 +1,6 @@
 import { Event, User } from "../models/index.js";
 import Draw from "../models/Draw.js";
-
+import { getDraw } from "../utils/draw.js";
 
 const drawController = {
 
@@ -9,19 +9,30 @@ const drawController = {
 
   async makeDraw(req, res) {
 
+    const event = req.params.id;
+      try {
 
-    
+      const drawResult = await getDraw(event.participants);
+
+      return res.status(200).json(drawResult);
+
+    }
+    catch (error) {
+      console.error(error.message);
+      res.status(500).json({ message: "Internal server error" });
+    }
   },
 
-
-
-
-
-  async getDrawByUser(req, res) {
+  async getDrawByGiver(req, res) {
     const user = req.params.id;
 
     try {
-      const userAsGiverDraws = await Draw.findAll({
+      const user = await User.findByPk(user);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      const getDrawReceiver = await Draw.findAll({
         where: { giver_id: user },
         include: [
           { model: User, as: "receiver", attributes: ["name", "email"] },
@@ -29,19 +40,7 @@ const drawController = {
         ],
       });
 
-      const userAsReceiverDraws = await Draw.findAll({
-        where: { receiver_id: user },
-        include: [
-          { model: User, as: "giver", attributes: ["name", "email"] },
-          { model: Event, as: "event", attributes: ["name", "date"] },
-        ],
-      });
-
-      if (!user) {
-        return res.status(404).json({ message: "User not found" });
-      }
-
-      return res.status(200).json({ userAsGiverDraws, userAsReceiverDraws });
+      return res.status(200).json(getDrawReceiver);
     } catch (error) {
       console.error(error.message);
       res.status(500).json({ message: "Internal server error" });
@@ -112,8 +111,8 @@ const drawController = {
 
 export default drawController;
 
+// Extract MakeDraw vers un fichier séparé
+
+// extraire les infos du receveur en fonction d'un giver dans un event précis
 
 
-// Extract MakeDraw vers un fichier séparé 
-
-// extraire les infos du receveur en fonction d'un giver dans un event précis 
