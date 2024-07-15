@@ -1,5 +1,6 @@
 import Draw from "../models/Draw.js";
 import { Event, User } from "../models/index.js";
+import sequelize from "../db/client-sequelize.js";
 
 function draw(participantsNames) {
   function shuffle(participantsNames) {
@@ -46,7 +47,7 @@ function draw(participantsNames) {
   return pairs;
 }
 
-async function makeDraw(req, res) {
+async function getDraw(req, res) {
   const eventId = req.params.id;
 
   try {
@@ -106,5 +107,4 @@ async function makeDraw(req, res) {
   }
 };
 
-
-export { draw, makeDraw };
+export { draw, getDraw };

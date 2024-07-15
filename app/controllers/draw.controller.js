@@ -1,10 +1,21 @@
 import { Event, User } from "../models/index.js";
 import Draw from "../models/Draw.js";
-import draw from "../utils/draw.js";
-import makeDraw from "../utils/draw.js";
-import sequelize from "../db/client-sequelize.js";
+
 
 const drawController = {
+
+
+
+
+  async makeDraw(req, res) {
+
+
+    
+  },
+
+
+
+
 
   async getDrawByUser(req, res) {
     const user = req.params.id;
