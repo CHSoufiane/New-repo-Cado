@@ -17,16 +17,17 @@ const drawController = {
   },
 
   async getReceiverByGiverAndEvent(req, res) {
-    const giver_Id = req.params.id;
+    const giverId = req.params.id;
+    const eventId = req.params.id;
 
     try {
-      const user = await User.findByPk(giver_Id);
+      const user = await User.findByPk(giver_id);
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
 
       const getReceiver = await Draw.findAll({
-        where: { giver_id: user },
+        where: { giver_id: giverId, event_id: eventId},
         include: [
           { model: User, as: "receiver", attributes: ["name", "email"] },
           { model: Event, as: "event", attributes: ["name", "date"] },
