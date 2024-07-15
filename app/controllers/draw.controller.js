@@ -16,16 +16,16 @@ const drawController = {
     }
   },
 
-  async getDrawByGiver(req, res) {
-    const user = req.params.id;
+  async getReceiverByGiverAndEvent(req, res) {
+    const giver_Id = req.params.id;
 
     try {
-      const user = await User.findByPk(user);
+      const user = await User.findByPk(giver_Id);
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
 
-      const getDrawReceiver = await Draw.findAll({
+      const getReceiver = await Draw.findAll({
         where: { giver_id: user },
         include: [
           { model: User, as: "receiver", attributes: ["name", "email"] },
@@ -33,7 +33,7 @@ const drawController = {
         ],
       });
 
-      return res.status(200).json(getDrawReceiver);
+      return res.status(200).json(getReceiver);
     } catch (error) {
       console.error(error.message);
       res.status(500).json({ message: "Internal server error" });
