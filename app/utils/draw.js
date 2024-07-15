@@ -46,7 +46,7 @@ function draw(participantsNames) {
   return pairs;
 }
 
-async function makeDraw(participantsNames) {
+async function makeDraw(req, res) {
   const eventId = req.params.id;
 
   try {
