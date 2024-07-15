@@ -42,8 +42,7 @@ const eventController = {
         await event.addParticipants(user);
       }
       await drawController.makeDraw({ params: { id: event.id } }, res);
-      // res.json(event)
-      // console.log(event);
+
       
     } catch (error) {
       console.error(error);

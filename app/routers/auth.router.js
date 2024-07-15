@@ -5,7 +5,7 @@ import authenticate from "../middlewares/auth.middleware.js";
 const router = express.Router();
 
 router.post("/register", controller.register);
-router.post("/login", authenticate, controller.login);
+router.post("/login", controller.login);
 router.get("/me", userController.getMe);
 
 
