@@ -159,25 +159,7 @@ const drawController = {
 
 export default drawController;
 
-// try {
-//   const user = await User.findByPk(req.params.id, {
-//     include: [
-//       {
-//         model: Draw,
-//         as: "draws",
-//         attributes: ["id"],
-//         include: [
-//           {
-//             model: User,
-//             as: "giver",
-//             attributes: ["name"],
-//           },
-//           {
-//             model: User,
-//             as: "receiver",
-//             attributes: ["name"],
-//           },
-//         ],
-//       },
-//     ],
-//   });
+
+// Extract MakeDraw vers un fichier séparé 
+
+// extraire les infos du receveur en fonction d'un giver dans un event précis 
