@@ -3,21 +3,14 @@ import Draw from "../models/Draw.js";
 import { getDraw } from "../utils/draw.js";
 
 const drawController = {
-
-
-
-
   async makeDraw(req, res) {
-
     const event = req.params.id;
-      try {
 
+    try {
       const drawResult = await getDraw(event.participants);
 
       return res.status(200).json(drawResult);
-
-    }
-    catch (error) {
+    } catch (error) {
       console.error(error.message);
       res.status(500).json({ message: "Internal server error" });
     }
