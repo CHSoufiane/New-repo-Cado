@@ -41,4 +41,6 @@ Event.hasMany(Draw, {foreignKey: "event_id", as: "draws" });
 
 Draw.belongsTo(Event, { foreignKey: "event_id", as: "event" });
 
+User.hasMany(Event_user, { foreignKey: 'receiver_id', as: 'receivers' });
+
 export { Event, User, Event_user, Draw };
