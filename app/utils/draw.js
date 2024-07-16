@@ -1,9 +1,9 @@
- import Draw from "../models/Draw.js";
+import Draw from "../models/Draw.js";
 import { Event, User } from "../models/index.js";
 import sequelize from "../db/client-sequelize.js";
 import { getTestMessageUrl } from "nodemailer";
 
-function draw(participantsNames) {
+async function draw(participantsNames) {
   function shuffle(participantsNames) {
     for (let i = participantsNames.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -48,9 +48,7 @@ function draw(participantsNames) {
   return ParticipantsPairs;
 }
 
-async function getDraw(req, res) {
-  const eventId = req.params.id;
-
+async function getDraw(eventId) {
   try {
     const event = await Event.findByPk(eventId, {
       include: {
@@ -62,16 +60,12 @@ async function getDraw(req, res) {
     });
 
     if (!event) {
-      return res.status(404).json({ message: "Event not found" });
+      throw new Error("Événement non trouvé");
     }
 
     const participantsNames = event.participants.map((user) => user.name);
 
-    const createdDraw = getDraw(participantsNames);
-
-    const result = draw(createdDraw);
-
-    return res.status(200).json({drawResult, message: "Draw created"});
+    const result = draw(participantsNames);
 
     const transaction = await sequelize.transaction();
 
@@ -84,32 +78,30 @@ async function getDraw(req, res) {
           (user) => user.name === receiverName
         );
 
-        if (giver && receiver) {
-          await Draw.create(
-            {
-              event_id: eventId,
-              giver_id: giver.id,
-              receiver_id: receiver.id,
-            },
-            { transaction }
-          );
-        } else {
-          throw new Error(
-            `User not found for giver: ${giverName} or receiver: ${receiverName}`
-          );
+        if (!giver || !receiver) {
+          throw new Error("User not found : ${giverName} : ${receiverName}");
         }
+
+        await Draw.create(
+          {
+            event_id: eventId,
+            giver_id: giver.id,
+            receiver_id: receiver.id,
+          },
+          { transaction }
+        );
       }
+
       await transaction.commit();
-      console.log("Draw successfully inserted");
-      return res.status(200).json({ result });
+
+      return { result, message: "Draw succesfull" };
     } catch (error) {
-      console.error(error.message);
-      return res.status(500).json({ message: "Internal server error" });
+      await transaction.rollback();
+      throw new Error("internal server error");
     }
   } catch (error) {
-    console.error(error.message);
-    res.status(500).json({ message: "Internal server error" });
+    throw new Error("internal server error");
   }
-};
+}
 
 export { draw, getDraw };

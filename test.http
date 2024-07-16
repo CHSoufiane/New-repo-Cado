@@ -13,7 +13,7 @@ GET {{endpoint}}/draws/user/2
 
 
 ### DRAW
-GET {{endpoint}}/draw/73
+GET {{endpoint}}/draw/10
 
 
 ###ME
@@ -44,13 +44,13 @@ Content-Type: application/json
 GET {{endpoint}}/users
 
 ### GET ONE USER
-GET {{endpoint}}/users/36
+GET {{endpoint}}/users/7
 
 ### CREATE USER
 POST {{endpoint}}/users
 Content-Type: application/json
 
-{ "name": "Yanis", "email": "yanis@gmail.com" }
+{ "name": "essai", "email": "essai@gmail.com" }
 
 ### UPDATE USER
 
@@ -65,12 +65,12 @@ Content-Type: application/json
 
 ### DELETE USER
 
-DELETE {{endpoint}}/users/20
+DELETE {{endpoint}}/users/8
 
 
 
 ### EVENTS
-GET {{endpoint}}/events/
+GET {{endpoint}}/events
 
 
 ### CREATE EVENT
@@ -85,7 +85,7 @@ Content-Type: application/json
 }
 ### ADD PARTICIPANTS TO EVENT
 
-POST {{endpoint}}/events/2/participants
+POST {{endpoint}}/create-event/20
 Content-Type: application/json
 
 {
