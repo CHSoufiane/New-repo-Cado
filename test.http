@@ -50,10 +50,8 @@ GET {{endpoint}}/users/36
 POST {{endpoint}}/users
 Content-Type: application/json
 
-{
-  "name": "soufiane",
-  "email": "soufiane@gneeail.com"
-}
+{ "name": "Yanis", "email": "yanis@gmail.com" }
+
 ### UPDATE USER
 
 PUT {{endpoint}}/users/10
@@ -81,19 +79,30 @@ POST {{endpoint}}/events
 Content-Type: application/json
 
 {
-    "name": "noel",
-    "date": "2021-09-01",
-    "organizer_id": 1
+    "name": "bla bla bla bla",
+  "date": "2024-01-10",
+  "organizer_id": 4
 }
 ### ADD PARTICIPANTS TO EVENT
 
-POST {{endpoint}}/create-event/1/participants
+POST {{endpoint}}/events/2/participants
 Content-Type: application/json
 
-  {
-    "name": "Yanis", 
-    "email": "yanis@gnail.com"
-  }
+{
+    "name": "noel",
+    "date": "2021-09-01",
+    "organizer_id": 1,
+    "participants": [
+    { "name": "Yanis", "email": "yanis@gmail.com" },
+    { "name": "Estelle", "email": "Estelle@gmail.com" }
+  ]
+}
+
+
+### GET PARTICIPANTS
+GET {{endpoint}}/events/3/participants
+Content-Type: application/json
+
 
 
 ### UPDATE EVENT
@@ -109,4 +118,5 @@ Content-Type: application/json
 
 ### DELETE EVENT
 
-DELETE {{endpoint}}/events/3
+DELETE {{endpoint}}/events/5
+

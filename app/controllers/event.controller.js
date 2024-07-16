@@ -19,17 +19,18 @@ const eventController = {
       res.status(500).json({ message: "Internal server error" });
     }
   },
+
   async addParticipants(req, res) {
-    const { name, date, participants, organizer_id} = req.body;
+    const { name, date, participants, organizer_id } = req.body;
     try {
       const event = await Event.create({ name, date, organizer_id });
-  
+
       // Add participants to the event
-      for (const participant of Object.values(participants)) {
+      for (const participant of participants) {
         let user = await User.findOne({ where: { email: participant.email } });
-  
+
         if (!user) {
-          const token = jwt.sign({ email: participant.email }, `${process.env.JWT_SECRET_KEY}`);
+          const token = jwt.sign({ email: participant.email }, process.env.JWT_SECRET_KEY);
           user = await User.create({
             name: participant.name,
             email: participant.email,
@@ -37,13 +38,35 @@ const eventController = {
             token: token
           });
         }
-  
+
         // Link user to the Event
         await event.addParticipants(user);
       }
       await drawController.makeDraw({ params: { id: event.id } }, res);
 
-      
+      return res.status(201).json({ message: "Participants added and draw completed", event });
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  },
+
+  async getParticipants(req, res) {
+
+    const { id } = req.params;
+    try {
+      const event = await Event.findByPk(id, {
+        include: {
+          model: User,
+          as: "participants",
+          through: { attributes: [] },
+          attributes: ["name", "email"],
+        },
+      });
+      if (!event) {
+        return res.status(404).json({ message: "Event not found" });
+      }
+      return res.status(200).json(event.participants);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Internal Server Error" });

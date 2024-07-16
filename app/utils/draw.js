@@ -1,4 +1,4 @@
-import Draw from "../models/Draw.js";
+ import Draw from "../models/Draw.js";
 import { Event, User } from "../models/index.js";
 import sequelize from "../db/client-sequelize.js";
 import { getTestMessageUrl } from "nodemailer";
