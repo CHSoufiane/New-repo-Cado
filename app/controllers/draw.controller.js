@@ -1,18 +1,17 @@
-import { Event, User, Draw } from "../models/index.js";
+import { Event, User } from "../models/index.js";
+import Draw from "../models/Draw.js";
 
 const drawController = {
   
-  async getReceiverByGiverAndEvent(req, res) {
-    const giverId = req.params.user_id;
+  async getReceiverByEvent(req, res) {
     const eventId = req.params.event_id;
 
     try {
-      // Récupérer l'événement pour obtenir les noms des participants
       const event = await Event.findByPk(eventId, {
         include: {
           model: User,
           as: "participants",
-          attributes: ["id", "name"], // Assurez-vous de sélectionner les attributs nécessaires
+          attributes: ["id", "name"],
         },
       });
 
@@ -20,12 +19,10 @@ const drawController = {
         return res.status(404).json({ message: "Événement non trouvé" });
       }
 
-      // Récupérer les noms des participants à partir de l'événement
       const participantsNames = event.participants.map(
         (participant) => participant.name
       );
 
-      // Recherche des tirages en fonction du donneur (giverId) et de l'événement (eventId)
       const getReceiver = await Draw.findAll({
         where: { giver_id: giverId, event_id: eventId },
         include: [

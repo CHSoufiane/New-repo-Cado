@@ -1,9 +1,9 @@
-import Draw from "../models/draw.js";
+import Draw from "../models/Draw.js";
 import { Event, User } from "../models/index.js";
 import sequelize from "../db/client-sequelize.js";
 
 
-async function draw(participantsNames) {
+
   function shuffle(participantsNames) {
     for (let i = participantsNames.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -14,6 +14,7 @@ async function draw(participantsNames) {
     }
     return participantsNames;
   }
+  async function draw(participantsNames) {
 
   if (participantsNames.length < 2) {
     throw new Error("Sorry, we need at least 2 participants to make a draw");
@@ -104,7 +105,7 @@ async function getDraw(eventId) {
     }
   } catch (error) {
     console.error("Get draw error: ", error.message);
-    throw new Error("Internal server error");
+    throw new Error("Internal server error de ouf ");
   }
 }
 
