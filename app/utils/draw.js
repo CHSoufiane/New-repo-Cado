@@ -48,7 +48,7 @@ import sequelize from "../db/client-sequelize.js";
   return pairs;
 }
 
-async function getDraw(eventId) {
+async function makeDraw(eventId) {
   try {
 
     const event = await Event.findByPk(eventId, {
@@ -111,4 +111,4 @@ async function getDraw(eventId) {
 }
 
 
-export { draw, getDraw };
+export { draw, makeDraw };
