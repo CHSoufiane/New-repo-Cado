@@ -5,7 +5,6 @@ class Event extends Model {
     static init(sequelize) {
         super.init(
             {
-                // Define the model attributes
                 name: {
                     type: DataTypes.STRING,
                     allowNull: false
@@ -22,7 +21,7 @@ class Event extends Model {
                         key: 'id'
                     },
                     allowNull: false,
-                    onDelete: 'CASCADE'  // Automatically delete associated user when event is deleted
+                    onDelete: 'CASCADE'
                 }
             },
             {

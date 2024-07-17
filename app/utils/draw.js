@@ -1,7 +1,7 @@
-import Draw from "../models/Draw.js";
+import Draw from "../models/draw.js";
 import { Event, User } from "../models/index.js";
 import sequelize from "../db/client-sequelize.js";
-import { getTestMessageUrl } from "nodemailer";
+
 
 async function draw(participantsNames) {
   function shuffle(participantsNames) {
@@ -14,10 +14,9 @@ async function draw(participantsNames) {
     }
     return participantsNames;
   }
+
   if (participantsNames.length < 2) {
-    throw new Error(
-      "Sorry, we need at least 2 participants to make a draw"
-    );
+    throw new Error("Sorry, we need at least 2 participants to make a draw");
   }
 
   let givers = [...participantsNames]; // Spread Syntax
@@ -40,12 +39,12 @@ async function draw(participantsNames) {
   }
 
   // configure a pair of giver and receiver
-  let ParticipantsPairs = {};
+  let pairs = {};
   for (let i = 0; i < givers.length; i++) {
     pairs[givers[i]] = receivers[i];
   }
 
-  return ParticipantsPairs;
+  return pairs;
 }
 
 async function getDraw(eventId) {
@@ -65,7 +64,7 @@ async function getDraw(eventId) {
 
     const participantsNames = event.participants.map((user) => user.name);
 
-    const result = draw(participantsNames);
+    const result = await draw(participantsNames);
 
     const transaction = await sequelize.transaction();
 
@@ -79,8 +78,11 @@ async function getDraw(eventId) {
         );
 
         if (!giver || !receiver) {
-          throw new Error("User not found : ${giverName} : ${receiverName}");
+          console.error(`User not found: giver - ${giverName}, receiver - ${receiverName}`);
+          throw new Error(`User not found: giver - ${giverName}, receiver - ${receiverName}`);
         }
+
+        console.log(`Creating Draw: event_id - ${eventId}, giver_id - ${giver.id}, receiver_id - ${receiver.id}`);
 
         await Draw.create(
           {
@@ -94,14 +96,17 @@ async function getDraw(eventId) {
 
       await transaction.commit();
 
-      return { result, message: "Draw succesfull" };
+      return { result, message: "Draw successful" };
     } catch (error) {
       await transaction.rollback();
-      throw new Error("internal server error");
+      console.error("Transaction error: ", error.message);
+      throw new Error("Internal server error");
     }
   } catch (error) {
-    throw new Error("internal server error");
+    console.error("Get draw error: ", error.message);
+    throw new Error("Internal server error");
   }
 }
+
 
 export { draw, getDraw };
