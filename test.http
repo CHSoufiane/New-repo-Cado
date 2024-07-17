@@ -12,8 +12,8 @@ Content-Type: application/json
 GET {{endpoint}}/draws/user/2
 
 
-### DRAW
-GET {{endpoint}}/draw/10
+### GET A DRAW
+GET {{endpoint}}/draw/
 
 
 ###ME
