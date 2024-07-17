@@ -1,32 +1,7 @@
-import { Event, User } from "../models/index.js";
-import Draw from "../models/Draw.js";
-import { getDraw } from "../utils/draw.js";
+import { Event, User, Draw } from "../models/index.js";
 
 const drawController = {
-  async makeDraw(req, res) {
-    const eventId = req.body.event_id;
-    try {
-      const event = await Event.findByPk(eventId, {
-        include: {
-          model: User,
-          as: "participants",
-          through: { attributes: [] },
-          attributes: ["id", "name"],
-        },
-      });
-
-      if (!event) {
-        return "Event not found";
-      }
-      const drawResult = await getDraw(event.participants);
-
-      return res.status(200).json(drawResult);
-    } catch (error) {
-      console.error(error.message);
-      res.status(500).json({ message: "Internal server error" });
-    }
-  },
-
+  
   async getReceiverByGiverAndEvent(req, res) {
     const giverId = req.params.user_id;
     const eventId = req.params.event_id;

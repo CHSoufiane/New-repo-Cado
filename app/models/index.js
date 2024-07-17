@@ -30,11 +30,13 @@ User.belongsToMany(Event, {
 Draw.belongsTo(User, {
   as: "giver",
   foreignKey: "giver_id",
+  AS:"giver",
 });
 
 Draw.belongsTo(User, {
   as: "receiver",
   foreignKey: "receiver_id",
+  as: "receiver",
 });
 
 Event.hasMany(Draw, {foreignKey: "event_id", as: "draws" });
@@ -42,5 +44,9 @@ Event.hasMany(Draw, {foreignKey: "event_id", as: "draws" });
 Draw.belongsTo(Event, { foreignKey: "event_id", as: "event" });
 
 User.hasMany(Event_user, { foreignKey: 'receiver_id', as: 'receivers' });
+
+User.hasMany(Draw, { foreignKey: "giver_id", as: "givenDraws" });
+User.hasMany(Draw, { foreignKey: "receiver_id", as: "receivedDraws" });
+
 
 export { Event, User, Event_user, Draw };

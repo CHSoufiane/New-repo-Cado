@@ -85,7 +85,7 @@ Content-Type: application/json
 }
 ### ADD PARTICIPANTS TO EVENT
 
-POST {{endpoint}}/create-event/20
+POST {{endpoint}}/create-event/22/participants
 Content-Type: application/json
 
 {

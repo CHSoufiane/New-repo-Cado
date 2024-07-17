@@ -9,7 +9,7 @@ class Draw extends Model {
         event_id: {
           type: DataTypes.STRING,
           references: {
-            model: "event",
+            model: "Event",
             key: "id",
           },
           allowNull: false,
@@ -18,7 +18,7 @@ class Draw extends Model {
         giver_id: {
           type: DataTypes.STRING,
           references: {
-            model: "user",
+            model: "User",
             key: "id",
           },
           allowNull: false,
@@ -27,7 +27,7 @@ class Draw extends Model {
         receiver_id: {
           type: DataTypes.STRING,
           references: {
-            model: "user",
+            model: "User",
             key: "id",
           },
           allowNull: false,

@@ -1,7 +1,6 @@
-import { Event, User } from '../models/index.js';
+import { Event, User, Draw } from '../models/index.js';
 import sequelize from '../db/client-sequelize.js';
 import jwt from 'jsonwebtoken';
-import drawController from './draw.controller.js';
 
 
 const eventController = {
@@ -42,7 +41,7 @@ const eventController = {
         // Link user to the Event
         await event.addParticipants(user);
       }
-      await drawController.makeDraw({ params: { id: event.id } }, res);
+        await getDraw ({ params: { id: event.id } }, res);
 
       return res.status(201).json({ message: "Participants added and draw completed", event });
     } catch (error) {

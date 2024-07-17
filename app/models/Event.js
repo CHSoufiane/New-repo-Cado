@@ -18,7 +18,7 @@ class Event extends Model {
                 organizer_id: {
                     type: DataTypes.INTEGER,
                     references: {
-                        model: 'user',
+                        model: 'User',
                         key: 'id'
                     },
                     allowNull: false,

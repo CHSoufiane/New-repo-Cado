@@ -1,10 +1,11 @@
 import express from 'express';
 import drawController from '../controllers/draw.controller.js';
+import { getDraw } from '../utils/draw.js';
 
 const router = express.Router();
 
 router.get('/draws', drawController.getDraws);
-router.post('/events/:id/draw', drawController.makeDraw);
+router.post('/events/:id/draw', getDraw);
 router.get('/draws/user/:id', drawController.getReceiverByGiverAndEvent)
 
 router.get('/draws/:id', drawController.getOneDraw);
