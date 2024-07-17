@@ -1,7 +1,5 @@
-import Draw from "../models/Draw.js";
-import { Event, User } from "../models/index.js";
+import { Event, User, Draw } from "../models/index.js";
 import sequelize from "../db/client-sequelize.js";
-import { getTestMessageUrl } from "nodemailer";
 
 async function draw(participantsNames) {
   function shuffle(participantsNames) {
@@ -79,27 +77,29 @@ async function getDraw(eventId) {
         );
 
         if (!giver || !receiver) {
-          throw new Error("User not found : ${giverName} : ${receiverName}");
+          throw new Error(`User not found : ${giverName} : ${receiverName}`);
         }
 
-        await Draw.create(
+        const draw = await Draw.create(
           {
             event_id: eventId,
             giver_id: giver.id,
-            receiver_id: receiver.id,
+            receiver_id: receiver.id
           },
           { transaction }
         );
       }
 
       await transaction.commit();
-
+      console.log(draw);
       return { result, message: "Draw succesfull" };
     } catch (error) {
+      console.error("return result", error.message);
       await transaction.rollback();
       throw new Error("internal server error");
     }
   } catch (error) {
+    console.error("error dans draw", error.message);
     throw new Error("internal server error");
   }
 }

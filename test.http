@@ -13,7 +13,7 @@ GET {{endpoint}}/draws/user/2
 
 
 ### GET A DRAW
-GET {{endpoint}}/draw/
+GET {{endpoint}}/draws/
 
 
 ###ME
@@ -85,7 +85,7 @@ Content-Type: application/json
 }
 ### ADD PARTICIPANTS TO EVENT
 
-POST {{endpoint}}/create-event/20
+POST {{endpoint}}/create-event
 Content-Type: application/json
 
 {

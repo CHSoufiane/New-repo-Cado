@@ -2,6 +2,7 @@ import { Event, User } from '../models/index.js';
 import sequelize from '../db/client-sequelize.js';
 import jwt from 'jsonwebtoken';
 import drawController from './draw.controller.js';
+import { getDraw } from '../utils/draw.js';
 
 
 const eventController = {
@@ -42,11 +43,11 @@ const eventController = {
         // Link user to the Event
         await event.addParticipants(user);
       }
-      await drawController.makeDraw({ params: { id: event.id } }, res);
+      await getDraw(event.id);
 
       return res.status(201).json({ message: "Participants added and draw completed", event });
     } catch (error) {
-      console.error(error.message);
+      console.error('error event',error.message);
       res.status(500).json({ message: "Internal Server Error" });
     }
   },
