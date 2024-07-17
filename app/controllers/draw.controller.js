@@ -101,7 +101,3 @@ const drawController = {
 };
 
 export default drawController;
-
-// Extract MakeDraw vers un fichier séparé
-
-// extraire les infos du receveur en fonction d'un giver dans un event précis
