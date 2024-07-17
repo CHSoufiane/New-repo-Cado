@@ -16,7 +16,7 @@ async function draw(participantsNames) {
   }
   if (participantsNames.length < 2) {
     throw new Error(
-      "désolé, il doit y avoir au minimum 2 personnes pour faire un tirage"
+      "Sorry, we need at least 2 participants to make a draw"
     );
   }
 
@@ -60,7 +60,7 @@ async function getDraw(eventId) {
     });
 
     if (!event) {
-      throw new Error("Événement non trouvé");
+      throw new Error("Event not found");
     }
 
     const participantsNames = event.participants.map((user) => user.name);
