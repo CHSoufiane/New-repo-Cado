@@ -50,6 +50,7 @@ import sequelize from "../db/client-sequelize.js";
 
 async function getDraw(eventId) {
   try {
+
     const event = await Event.findByPk(eventId, {
       include: {
         model: User,

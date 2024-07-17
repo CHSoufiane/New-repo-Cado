@@ -4,7 +4,7 @@ import Draw from "../models/Draw.js";
 const drawController = {
   
   async getReceiverByEvent(req, res) {
-    const eventId = req.params.event_id;
+    const eventId = req.params.id;
 
     try {
       const event = await Event.findByPk(eventId, {

@@ -7,13 +7,15 @@
 POST {{endpoint}}/events/1/draw
 Content-Type: application/json
 
-
 ### GET DRAW BY USER
-GET {{endpoint}}/draws/user/2
-
+GET {{endpoint}}/draws/user/1
 
 ### GET A DRAW
 GET {{endpoint}}/draw/1
+
+
+
+
 
 
 ###ME
@@ -29,7 +31,18 @@ Content-Type: application/json
 }
 
 ### REGISTER
-import Draw from "./models/Draw.js";
+POST {{endpoint}}/register
+Content-Type: application/json
+
+{
+  "name": "Yanis",
+  "email": "yaniis..785@gmail.com",
+  "password": "test"
+}
+
+
+
+
 
 ### USERS
 GET {{endpoint}}/users
@@ -60,9 +73,10 @@ DELETE {{endpoint}}/users/8
 
 
 
+
+
 ### EVENTS
 GET {{endpoint}}/events
-
 
 ### CREATE EVENT
 
@@ -76,7 +90,7 @@ Content-Type: application/json
 }
 ### ADD PARTICIPANTS TO EVENT
 
-POST {{endpoint}}/create-event/28/
+POST {{endpoint}}/create-event/22/
 Content-Type: application/json
 
 {
