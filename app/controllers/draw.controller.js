@@ -2,16 +2,17 @@ import { Event, User } from "../models/index.js";
 import Draw from "../models/Draw.js";
 
 const drawController = {
-  
-  async getReceiverByEvent(req, res) {
-    const eventId = req.params.id;
+  async getReceiverFromAnEvent(req, res) {
 
+    const eventId = req.params.id;
+    const giverId = req.params.id;
     try {
-      const event = await Event.findByPk(eventId, {
+      const event = await Event.findByPk(req.params.id, {
         include: {
           model: User,
           as: "participants",
-          attributes: ["id", "name"],
+          through: { attributes: [] },
+          attributes: ["name"],
         },
       });
 
@@ -19,7 +20,7 @@ const drawController = {
         return res.status(404).json({ message: "Événement non trouvé" });
       }
 
-      const participantsNames = event.participants.map(
+      const participants = event.participants.map(
         (participant) => participant.name
       );
 
