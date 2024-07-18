@@ -9,9 +9,15 @@ Content-Type: application/json
 
 ### GET DRAW BY USER
 GET {{endpoint}}/draws/user/1
+Content-Type: application/json
 
 ### GET A DRAW
 GET {{endpoint}}/draw/1
+Content-Type: application/json
+
+### GET ALL DRAWS
+GET {{endpoint}}/draws
+Content-Type: application/json
 
 
 
@@ -20,6 +26,7 @@ GET {{endpoint}}/draw/1
 
 ###ME
 GET {{endpoint}}/me
+Content-Type: application/json
 
 ###LOGIN
 POST {{endpoint}}/login
@@ -46,9 +53,11 @@ Content-Type: application/json
 
 ### USERS
 GET {{endpoint}}/users
+Content-Type: application/json
 
 ### GET ONE USER
 GET {{endpoint}}/users/7
+Content-Type: application/json
 
 ### CREATE USER
 POST {{endpoint}}/users
@@ -70,6 +79,7 @@ Content-Type: application/json
 ### DELETE USER
 
 DELETE {{endpoint}}/users/8
+Content-Type: application/json
 
 
 
@@ -77,6 +87,7 @@ DELETE {{endpoint}}/users/8
 
 ### EVENTS
 GET {{endpoint}}/events
+Content-Type: application/json
 
 ### CREATE EVENT
 
@@ -124,4 +135,5 @@ Content-Type: application/json
 ### DELETE EVENT
 
 DELETE {{endpoint}}/events/5
+Content-Type: application/json
 
