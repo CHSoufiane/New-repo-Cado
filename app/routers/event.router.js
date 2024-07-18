@@ -6,7 +6,7 @@ const router = express.Router();
 
 // router.get('/events', eventController.getEvents);
 // router.post('/events', eventController.createEvent);
-router.post('/create-event/', eventController.addParticipants);
+router.post('/create-event/', eventController.createEventWithParticipants);
 
 // router.get('/events/:id/participants', eventController.getParticipants);
 

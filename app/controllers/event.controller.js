@@ -14,43 +14,52 @@ const eventController = {
     }
   },
 
-  async addParticipants(req, res) {
+  async createEventWithParticipants(req, res) {
     const { name, date, participants, organizer_id } = req.body;
     try {
       const event = await Event.create({ name, date, organizer_id });
-  
+      // Add participants to the event
       for (const participant of participants) {
         let user = await User.findOne({ where: { email: participant.email } });
-  
         if (!user) {
-          const token = jwt.sign({ email: participant.email }, process.env.JWT_SECRET);
+          const token = jwt.sign(
+            { email: participant.email },
+            `${process.env.JWT_SECRET}`
+          );
           user = await User.create({
             name: participant.name,
             email: participant.email,
             is_registered: false,
-            token: token
+            token: token,
           });
         }
+
         try {
-        await event.addParticipant(user);
-      }
-        catch (error) {
-          console.error(`Error adding participant ${user.email} to event:`, error.message);
+          await event.addParticipant(user);
+        } catch (error) {
+          console.error(
+            `Error adding participant ${user.email} to event:`,
+            error.message
+          );
           throw new Error(`Failed to add participant ${user.email} to event`);
         }
       }
-  
+
       const drawResult = await makeDraw(event.id);
-  
-      return res.status(201).json({ message: "Participants added and draw completed", event, drawResult });
-  
+
+      return res
+        .status(201)
+        .json({
+          message: "Participants added and draw completed",
+          event,
+          drawResult,
+        });
     } catch (error) {
-      console.error('Error total', error.message);
+      console.error("Error total", error.message);
       res.status(500).json({ message: "Internal Server Error" });
     }
   },
   async getParticipants(req, res) {
-
     const { id } = req.params;
     try {
       const event = await Event.findByPk(id, {
@@ -145,7 +154,6 @@ const eventController = {
       res.status(500).json({ message: "Internal server error" });
     }
   },
-  
 };
 
 export default eventController;

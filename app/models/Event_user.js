@@ -18,7 +18,7 @@ class Event_user extends Model {
           receiver_id: {
             type: DataTypes.INTEGER,
             references: { model: 'User', key: 'id' },
-            allowNull: true, 
+            allowNull: false, 
           },
         },
         {

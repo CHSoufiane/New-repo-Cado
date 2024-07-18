@@ -47,7 +47,9 @@ import sequelize from "../db/client-sequelize.js";
   return pairs;
 }
 
-async function makeDraw(eventId) {
+async function makeDraw(req, res) {
+
+  const eventId = req.params.id;
   try {
 
     const event = await Event.findByPk(eventId, {
