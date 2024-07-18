@@ -109,8 +109,15 @@ const eventController = {
   },
 
   async getOneEvent(req, res) {
+    const { id } = req.params;
     try {
-      const event = await Event.findByPk(req.params.id);
+      const event = await Event.findByPk(id, {
+        include: {
+          model: User,
+          as: "participants",
+          through: { attributes: [] },
+          attributes: ["name", "email"],
+        }});
       if (!event) {
         return res.status(404).json({ message: "Event not found" });
       }
