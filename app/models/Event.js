@@ -7,7 +7,7 @@ class Event extends Model {
             {
                 // Define the model attributes
                 name: {
-                    type: DataTypes.STRING,
+                    type: DataTypes.INTEGER,
                     allowNull: false
                 },
                 date: {
@@ -18,7 +18,7 @@ class Event extends Model {
                 organizer_id: {
                     type: DataTypes.INTEGER,
                     references: {
-                        model: 'user',
+                        model: 'User',
                         key: 'id'
                     },
                     allowNull: false,

@@ -1,43 +1,17 @@
 import { Event, User } from "../models/index.js";
 import Draw from "../models/Draw.js";
-import { getDraw } from "../utils/draw.js";
 
 const drawController = {
-  async makeDraw(req, res) {
-    const eventId = req.body.event_id;
+  
+  async getReceiverByEvent(req, res) {
+    const eventId = req.params.id;
+
     try {
       const event = await Event.findByPk(eventId, {
         include: {
           model: User,
           as: "participants",
-          through: { attributes: [] },
           attributes: ["id", "name"],
-        },
-      });
-
-      if (!event) {
-        return "Event not found";
-      }
-      const drawResult = await getDraw(event.participants);
-
-      return res.status(200).json(drawResult);
-    } catch (error) {
-      console.error(error.message);
-      res.status(500).json({ message: "Internal server error" });
-    }
-  },
-
-  async getReceiverByGiverAndEvent(req, res) {
-    const giverId = req.params.user_id;
-    const eventId = req.params.event_id;
-
-    try {
-      // Récupérer l'événement pour obtenir les noms des participants
-      const event = await Event.findByPk(eventId, {
-        include: {
-          model: User,
-          as: "participants",
-          attributes: ["id", "name"], // Assurez-vous de sélectionner les attributs nécessaires
         },
       });
 
@@ -45,12 +19,10 @@ const drawController = {
         return res.status(404).json({ message: "Événement non trouvé" });
       }
 
-      // Récupérer les noms des participants à partir de l'événement
       const participantsNames = event.participants.map(
         (participant) => participant.name
       );
 
-      // Recherche des tirages en fonction du donneur (giverId) et de l'événement (eventId)
       const getReceiver = await Draw.findAll({
         where: { giver_id: giverId, event_id: eventId },
         include: [
@@ -129,7 +101,3 @@ const drawController = {
 };
 
 export default drawController;
-
-// Extract MakeDraw vers un fichier séparé
-
-// extraire les infos du receveur en fonction d'un giver dans un event précis

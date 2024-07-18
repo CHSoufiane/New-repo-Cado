@@ -7,13 +7,15 @@
 POST {{endpoint}}/events/1/draw
 Content-Type: application/json
 
-
 ### GET DRAW BY USER
-GET {{endpoint}}/draws/user/2
-
+GET {{endpoint}}/draws/user/1
 
 ### GET A DRAW
-GET {{endpoint}}/draws/
+GET {{endpoint}}/draw/1
+
+
+
+
 
 
 ###ME
@@ -37,6 +39,8 @@ Content-Type: application/json
   "email": "yaniis..785@gmail.com",
   "password": "test"
 }
+
+
 
 
 
@@ -69,9 +73,10 @@ DELETE {{endpoint}}/users/8
 
 
 
+
+
 ### EVENTS
 GET {{endpoint}}/events
-
 
 ### CREATE EVENT
 
@@ -85,7 +90,7 @@ Content-Type: application/json
 }
 ### ADD PARTICIPANTS TO EVENT
 
-POST {{endpoint}}/create-event
+POST {{endpoint}}/create-event/22/
 Content-Type: application/json
 
 {
@@ -100,7 +105,7 @@ Content-Type: application/json
 
 
 ### GET PARTICIPANTS
-GET {{endpoint}}/events/3/participants
+GET {{endpoint}}/events/1/participants
 Content-Type: application/json
 
 

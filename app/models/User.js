@@ -7,16 +7,16 @@ class User extends Model {
             {
                 // Define the model attributes
                 name: {
-                    type: DataTypes.STRING,
+                    type: DataTypes.INTEGER,
                     allowNull: false
                 },
                 email: {
-                    type: DataTypes.STRING,
+                    type: DataTypes.INTEGER,
                     allowNull: false,
                     unique: true
                 },
                 password: {
-                    type: DataTypes.STRING,
+                    type: DataTypes.INTEGER,
                     allowNull: true
                 },
                 is_registered: {
@@ -25,7 +25,7 @@ class User extends Model {
                     defaultValue: false
                 },
                 token: {
-                    type: DataTypes.STRING,
+                    type: DataTypes.INTEGER,
                     allowNull: false
                 }
             },

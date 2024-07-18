@@ -1,7 +1,8 @@
 import { Event, User, Draw } from "../models/index.js";
 import sequelize from "../db/client-sequelize.js";
 
-async function draw(participantsNames) {
+
+
   function shuffle(participantsNames) {
     for (let i = participantsNames.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -12,10 +13,10 @@ async function draw(participantsNames) {
     }
     return participantsNames;
   }
+  async function draw(participantsNames) {
+
   if (participantsNames.length < 2) {
-    throw new Error(
-      "Sorry, we need at least 2 participants to make a draw"
-    );
+    throw new Error("Sorry, we need at least 2 participants to make a draw");
   }
 
   let givers = [...participantsNames]; // Spread Syntax
@@ -38,16 +39,17 @@ async function draw(participantsNames) {
   }
 
   // configure a pair of giver and receiver
-  let ParticipantsPairs = {};
+  let pairs = {};
   for (let i = 0; i < givers.length; i++) {
     pairs[givers[i]] = receivers[i];
   }
 
-  return ParticipantsPairs;
+  return pairs;
 }
 
-async function getDraw(eventId) {
+async function makeDraw(eventId) {
   try {
+
     const event = await Event.findByPk(eventId, {
       include: {
         model: User,
@@ -63,7 +65,7 @@ async function getDraw(eventId) {
 
     const participantsNames = event.participants.map((user) => user.name);
 
-    const result = draw(participantsNames);
+    const result = await draw(participantsNames);
 
     const transaction = await sequelize.transaction();
 
@@ -77,10 +79,13 @@ async function getDraw(eventId) {
         );
 
         if (!giver || !receiver) {
-          throw new Error(`User not found : ${giverName} : ${receiverName}`);
+          console.error(`User not found: giver - ${giverName}, receiver - ${receiverName}`);
+          throw new Error(`User not found: giver - ${giverName}, receiver - ${receiverName}`);
         }
 
-        const draw = await Draw.create(
+        console.log(`Creating Draw: event_id - ${eventId}, giver_id - ${giver.id}, receiver_id - ${receiver.id}`);
+
+        await Draw.create(
           {
             event_id: eventId,
             giver_id: giver.id,
@@ -91,17 +96,19 @@ async function getDraw(eventId) {
       }
 
       await transaction.commit();
-      console.log(draw);
-      return { result, message: "Draw succesfull" };
+
+      return { result, message: "Draw successful" };
     } catch (error) {
       console.error("return result", error.message);
       await transaction.rollback();
-      throw new Error("internal server error");
+      console.error("Transaction error: ", error.message);
+      throw new Error("Internal server error");
     }
   } catch (error) {
-    console.error("error dans draw", error.message);
-    throw new Error("internal server error");
+    console.error("Get draw error: ", error.message);
+    throw new Error("Internal server error de ouf ");
   }
 }
 
-export { draw, getDraw };
+
+export { draw, makeDraw };

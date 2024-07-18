@@ -1,19 +1,12 @@
-import { Event, User } from '../models/index.js';
-import sequelize from '../db/client-sequelize.js';
-import jwt from 'jsonwebtoken';
-import drawController from './draw.controller.js';
-import { getDraw } from '../utils/draw.js';
-
+import { Event, User } from "../models/index.js";
+import { makeDraw } from "../utils/draw.js";
+import jwt from "jsonwebtoken";
 
 const eventController = {
   async createEvent(req, res) {
     const { name, date, organizer_id } = req.body;
     try {
-      const event = await Event.create({
-        name,
-        date,
-        organizer_id,
-      });
+      const event = await Event.create({ name, date, organizer_id });
       return res.status(201).json(event);
     } catch (error) {
       console.error(error.message);
@@ -26,7 +19,6 @@ const eventController = {
     try {
       const event = await Event.create({ name, date, organizer_id });
 
-      // Add participants to the event
       for (const participant of participants) {
         let user = await User.findOne({ where: { email: participant.email } });
 
@@ -39,13 +31,13 @@ const eventController = {
             token: token
           });
         }
-
-        // Link user to the Event
-        await event.addParticipants(user);
+        await event.addParticipant(user);
       }
-      await getDraw(event.id);
 
-      return res.status(201).json({ message: "Participants added and draw completed", event });
+      const drawResult = await makeDraw(event.id);
+
+      return res.status(201).json({ message: "Participants added and draw completed", event, drawResult });
+
     } catch (error) {
       console.error('error event',error.message);
       res.status(500).json({ message: "Internal Server Error" });

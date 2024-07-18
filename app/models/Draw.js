@@ -5,29 +5,28 @@ class Draw extends Model {
   static init(sequelize) {
     super.init(
       {
-        // Define the model attributes
         event_id: {
-          type: DataTypes.STRING,
+          type: DataTypes.INTEGER,
           references: {
-            model: "event",
+            model: "Event",
             key: "id",
           },
           allowNull: false,
         },
 
         giver_id: {
-          type: DataTypes.STRING,
+          type: DataTypes.INTEGER,
           references: {
-            model: "user",
+            model: "User",
             key: "id",
           },
           allowNull: false,
         },
 
         receiver_id: {
-          type: DataTypes.STRING,
+          type: DataTypes.INTEGER,
           references: {
-            model: "user",
+            model: "User",
             key: "id",
           },
           allowNull: false,
