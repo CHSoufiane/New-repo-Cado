@@ -1,5 +1,5 @@
 import { Event, User, Draw } from "../models/index.js";
-import { draw } from "../utils/draw.js";
+import { makeDraw } from "../utils/draw.js";
 import jwt from "jsonwebtoken";
 
 const eventController = {
@@ -40,7 +40,7 @@ const eventController = {
         }
       }
   
-      const drawResult = await eventController.makeDraw(event.id);
+      const drawResult = await makeDraw(event.id);
   
       return res.status(201).json({ message: "Participants added and draw completed", event, drawResult });
   

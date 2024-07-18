@@ -58,14 +58,14 @@ async function makeDraw(eventId) {
         attributes: ["id", "name"],
       },
     });
-
+  console.log(event);
     if (!event) {
       throw new Error("Event not found");
     }
 
     const participantsNames = event.participants.map((user) => user.name);
 
-    const result = await draw(participantsNames);
+    const result = draw(participantsNames);
 
     const transaction = await sequelize.transaction();
 
