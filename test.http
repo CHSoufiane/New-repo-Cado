@@ -90,7 +90,7 @@ Content-Type: application/json
 }
 ### ADD PARTICIPANTS TO EVENT
 
-POST {{endpoint}}/create-event/22/
+POST {{endpoint}}/create-event/
 Content-Type: application/json
 
 {

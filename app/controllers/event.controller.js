@@ -1,5 +1,5 @@
-import { Event, User } from "../models/index.js";
-import { makeDraw } from "../utils/draw.js";
+import { Event, User, Draw } from "../models/index.js";
+import { draw } from "../utils/draw.js";
 import jwt from "jsonwebtoken";
 
 const eventController = {
@@ -18,12 +18,12 @@ const eventController = {
     const { name, date, participants, organizer_id } = req.body;
     try {
       const event = await Event.create({ name, date, organizer_id });
-
+  
       for (const participant of participants) {
         let user = await User.findOne({ where: { email: participant.email } });
-
+  
         if (!user) {
-          const token = jwt.sign({ email: participant.email }, process.env.JWT_SECRET_KEY);
+          const token = jwt.sign({ email: participant.email }, process.env.JWT_SECRET);
           user = await User.create({
             name: participant.name,
             email: participant.email,
@@ -31,19 +31,24 @@ const eventController = {
             token: token
           });
         }
+        try {
         await event.addParticipant(user);
       }
-
-      const drawResult = await makeDraw(event.id);
-
+        catch (error) {
+          console.error(`Error adding participant ${user.email} to event:`, error.message);
+          throw new Error(`Failed to add participant ${user.email} to event`);
+        }
+      }
+  
+      const drawResult = await eventController.makeDraw(event.id);
+  
       return res.status(201).json({ message: "Participants added and draw completed", event, drawResult });
-
+  
     } catch (error) {
-      console.error('error event',error.message);
+      console.error('Error total', error.message);
       res.status(500).json({ message: "Internal Server Error" });
     }
   },
-
   async getParticipants(req, res) {
 
     const { id } = req.params;

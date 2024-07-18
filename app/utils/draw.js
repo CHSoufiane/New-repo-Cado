@@ -13,7 +13,7 @@ import sequelize from "../db/client-sequelize.js";
     }
     return participantsNames;
   }
-  async function draw(participantsNames) {
+  function draw(participantsNames) {
 
   if (participantsNames.length < 2) {
     throw new Error("Sorry, we need at least 2 participants to make a draw");
@@ -109,6 +109,5 @@ async function makeDraw(eventId) {
     throw new Error("Internal server error de ouf ");
   }
 }
-
 
 export { draw, makeDraw };
