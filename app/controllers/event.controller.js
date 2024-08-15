@@ -1,5 +1,7 @@
-import { Event, User } from "../models/index.js";
+import { Event, User, Draw } from "../models/index.js";
 import jwt from "jsonwebtoken";
+import { sendEmail } from "../utils/sendEmail.js";
+import { draw } from "../utils/draw.js";
 
 export default {
   async createEvent(req, res) {
@@ -17,16 +19,17 @@ export default {
     }
   },
   async createEventWithParticipants(req, res) {
-    const { name, date, participants, organizer_id} = req.body;
+    const { name, date, participants, organizer_id } = req.body;
     try {
       const event = await Event.create({ name, date, organizer_id });
   
       // Add participants to the event
+      let eventUsers = [];
       for (const participant of participants) {
         let user = await User.findOne({ where: { email: participant.email } });
   
         if (!user) {
-          const token = jwt.sign({ email: participant.email }, `${process.env.JWT_SECRET_KEY}`);
+          const token = jwt.sign({ email: participant.email }, process.env.JWT_SECRET);
           user = await User.create({
             name: participant.name,
             email: participant.email,
@@ -36,15 +39,37 @@ export default {
         }
   
         // Link user to the Event
-        await event.addParticipants(user);
+        await event.addParticipant(user);
+        eventUsers.push(user); // Collect user for the draw
       }
   
-      res
-        .status(201)
-        .json({
-          message: "Event and participants created successfully",
-          event,
+      // Perform the draw
+      const userNames = eventUsers.map(user => user.name); // Use names for the draw
+      const pairs = draw(userNames);
+  
+      // Save the pairs in the Draw table and send emails
+      for (let [giver, receiver] of Object.entries(pairs)) {
+        const giverUser = eventUsers.find(user => user.name === giver);
+        const receiverUser = eventUsers.find(user => user.name === receiver);
+  
+        // Save the draw pair in the Draw table
+        await Draw.create({
+          event_id: event.id,
+          giver_id: giverUser.id,
+          receiver_id: receiverUser.id
         });
+  
+        // Send email to giver with the receiver's name
+        const signedLink = `http://localhost:3000/view/${giverUser.token}`;
+        const subject = "Résultat du tirage au sort pour Cad'O";
+        const html = `Bonjour ${giverUser.name}, tu dois offrir un cadeau à ${receiverUser.name}. Clique sur le lien pour voir les détails ${signedLink}`;
+        sendEmail(giverUser.email, subject, html);
+      }
+  
+      res.status(201).json({
+        message: "Event and participants created successfully",
+        event,
+      });
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Internal Server Error" });
