@@ -3,13 +3,38 @@ import jwt from "jsonwebtoken";
 import "dotenv/config";
 import User from "../models/User.js";
 import { sendEmail } from "../utils/sendEmail.js";
+import Joi from "joi";
 
 // Register a new user
 export default {
   async register(req, res) {
     try {
       // Extract user data from request body
-      const { name, email, password } = req.body;
+      const schema = Joi.object({
+
+        name: Joi.string()
+        .min(3) // min length 3 char
+        .max(30) // maximum length 30 char
+        .pattern(new RegExp('^[a-zA-Z]+$')) // only letters
+        .required(),
+    
+        password : Joi.string()
+        .pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})')) // password pattern with 8 char min, 1 uppercase, 1 lowercase, 1 number, 1 special char
+        .required(),
+    
+        confirmPassword : Joi.ref('password'),
+    
+        email : Joi.string()
+        .email({ tlds: { allow: false } }) // valid email format 
+        .required(),
+    });
+
+      const { error, value } = schema.validate(req.body);
+      if (error) {
+        console.log(error.details[0].message);
+        return res.status(400).json(error.details[0].message);
+      }
+      const { name, email, password } = value;
 
       // Check if user already exists
       const existingUser = await User.findOne({

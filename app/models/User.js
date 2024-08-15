@@ -5,7 +5,6 @@ class User extends Model {
     static init(sequelize) {
         super.init(
             {
-                // Define the model attributes
                 name: {
                     type: DataTypes.STRING,
                     allowNull: false
