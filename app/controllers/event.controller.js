@@ -1,7 +1,7 @@
 import { Event, User, Draw } from "../models/index.js";
 import jwt from "jsonwebtoken";
 import { sendEmail } from "../utils/sendEmail.js";
-import { draw } from "../utils/draw.js";
+import { findSecretSantaMatch }  from "../utils/draw.js";
 
 export default {
   async createEvent(req, res) {
@@ -29,7 +29,7 @@ export default {
         let user = await User.findOne({ where: { email: participant.email } });
   
         if (!user) {
-          const token = jwt.sign({ email: participant.email }, process.env.JWT_SECRET);
+          const token = jwt.sign({ email: participant.email }, `${process.env.JWT_SECRET}`);
           user = await User.create({
             name: participant.name,
             email: participant.email,
@@ -39,37 +39,19 @@ export default {
         }
   
         // Link user to the Event
-        await event.addParticipant(user);
-        eventUsers.push(user); // Collect user for the draw
+        await event.addParticipants(user);
+        const signedLink = `http://localhost:5173/view/${user.token}`;
+        const subject = "Vous avez été invité à participer sur Cad'O";
+        const html = `Bonjour ${user.name}, tu as été invité à participer sur Cad'O! ! Clique sur le lien pour voir le résultat du tirage au sort ${signedLink}`;
+        sendEmail(user.email, subject, html);
       }
   
-      // Perform the draw
-      const userNames = eventUsers.map(user => user.name); // Use names for the draw
-      const pairs = draw(userNames);
-  
-      // Save the pairs in the Draw table and send emails
-      for (let [giver, receiver] of Object.entries(pairs)) {
-        const giverUser = eventUsers.find(user => user.name === giver);
-        const receiverUser = eventUsers.find(user => user.name === receiver);
-  
-        // Save the draw pair in the Draw table
-        await Draw.create({
-          event_id: event.id,
-          giver_id: giverUser.id,
-          receiver_id: receiverUser.id
+      res
+        .status(201)
+        .json({
+          message: "Event and participants created successfully",
+          event,
         });
-  
-        // Send email to giver with the receiver's name
-        const signedLink = `http://localhost:3000/view/${giverUser.token}`;
-        const subject = "Résultat du tirage au sort pour Cad'O";
-        const html = `Bonjour ${giverUser.name}, tu dois offrir un cadeau à ${receiverUser.name}. Clique sur le lien pour voir les détails ${signedLink}`;
-        sendEmail(giverUser.email, subject, html);
-      }
-  
-      res.status(201).json({
-        message: "Event and participants created successfully",
-        event,
-      });
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Internal Server Error" });
@@ -150,4 +132,24 @@ export default {
       res.status(500).json({ message: "Internal server error" });
     }
   },
+
+  async getResults(req, res){
+    const { token } = req.params;
+
+    try {
+      const decoded = jwt.verify(token, `${process.env.JWT_SECRET}`);
+      const email = decoded.email;
+  
+      // Assuming you have a method to find the Secret Santa match
+      const match = await findSecretSantaMatch(email);
+  
+      res.json((match));
+    } catch (error) {
+      console.error(error.message)
+      res.status(400).send('Invalid or expired token');
+    }
+  },
 };
+
+// Assuming this function is implemented elsewhere
+

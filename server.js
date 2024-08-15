@@ -7,7 +7,13 @@ import event_router from './app/routers/event.router.js';
 import draw_router from './app/routers/draw.router.js';
 import cookieParser from 'cookie-parser';
 
-import limiter from './app/middlewares/rateLimit.js';
+const privateKey = fs.readFileSync('/etc/letsencrypt/live/cado.zapto.org/privkey.pem', 'utf8');
+const certificate = fs.readFileSync('/etc/letsencrypt/live/cado.zapto.org/fullchain.pem', 'utf8');
+
+const credentials = {
+    key: privateKey,
+    cert: certificate
+};
 
 
 const app = express();
@@ -29,7 +35,18 @@ app.use(draw_router);
 
 
 
-// Écoutez sur le port 3000 pour Express
-app.listen(3000, () => {
-    console.log(`Server is running on ${process.env.BASE_URL}:${process.env.PORT}`);
+
+httpsServer.listen(443, () => {
+    console.log(`HTTPS Server is running on https://165.227.232.51`);
+});
+
+const http = express();
+
+http.get('*', (req, res) => {
+    res.redirect(`https://${req.headers.host}${req.url}`);
+});
+
+
+http.listen(80, () => {
+    console.log('HTTP Server is running on port 80 and redirecting to HTTPS');
 });
