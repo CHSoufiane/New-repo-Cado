@@ -1,3 +1,5 @@
+import fs from 'fs';
+import https from 'https';
 import 'dotenv/config'; 
 import express from "express";
 import cors from 'cors';
@@ -19,13 +21,13 @@ const credentials = {
 const app = express();
 
 app.use(cors({
-    origin: ['http://localhost:5173', 'http://127.0.0.1:5173'], // Ajoutez ici l'origine de votre front-end
+    origin: 'http://localhost:5173', // Ajoutez ici l'origine de votre front-end
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true // Ensure credentials are included in requests
 }));
 
-app.use(limiter);
+
 app.use(cookieParser());
 app.use(express.json());
 app.use(user_router);
@@ -33,7 +35,7 @@ app.use(auth_router);
 app.use(event_router);
 app.use(draw_router);
 
-
+const httpsServer = https.createServer(credentials, app);
 
 
 httpsServer.listen(443, () => {
@@ -44,9 +46,4 @@ const http = express();
 
 http.get('*', (req, res) => {
     res.redirect(`https://${req.headers.host}${req.url}`);
-});
-
-
-http.listen(80, () => {
-    console.log('HTTP Server is running on port 80 and redirecting to HTTPS');
 });
