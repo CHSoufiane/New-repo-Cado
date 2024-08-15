@@ -1,7 +1,7 @@
 import { Event, User, Draw } from "../models/index.js";
 import jwt from "jsonwebtoken";
 import { sendEmail } from "../utils/sendEmail.js";
-import { findSecretSantaMatch }  from "../utils/draw.js";
+import { draw }  from "../utils/draw.js";
 
 export default {
   async createEvent(req, res) {
