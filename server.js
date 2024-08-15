@@ -9,6 +9,7 @@ import event_router from './app/routers/event.router.js';
 import draw_router from './app/routers/draw.router.js';
 import cookieParser from 'cookie-parser';
 
+
 const privateKey = fs.readFileSync('/etc/letsencrypt/live/cado.zapto.org/privkey.pem', 'utf8');
 const certificate = fs.readFileSync('/etc/letsencrypt/live/cado.zapto.org/fullchain.pem', 'utf8');
 
@@ -37,18 +38,19 @@ app.use(draw_router);
 
 const httpsServer = https.createServer(credentials, app);
 
-
+// Écoutez sur le port 443 pour HTTPS
 httpsServer.listen(443, () => {
     console.log(`HTTPS Server is running on https://165.227.232.51`);
 });
 
+// Optionnel : rediriger le trafic HTTP vers HTTPS
 const http = express();
 
 http.get('*', (req, res) => {
     res.redirect(`https://${req.headers.host}${req.url}`);
 });
 
-
+// Écoutez sur le port 80 pour HTTP
 http.listen(80, () => {
     console.log('HTTP Server is running on port 80 and redirecting to HTTPS');
 });
