@@ -28,7 +28,11 @@ export default {
       for (const participant of participants) {
         let user = await User.findOne({ where: { email: participant.email } });
   
-        if (!user) {
+        if (user) {
+          const newToken = jwt.sign({ email: user.email }, process.env.JWT_SECRET);
+          user.token = newToken;
+          user.save(); // Update the token
+        } else {
           const token = jwt.sign({ email: participant.email }, process.env.JWT_SECRET);
           user = await User.create({
             name: participant.name,
@@ -58,7 +62,6 @@ export default {
           giver_id: giverUser.id,
           receiver_id: receiverUser.id
         });
-        
         
         // Send email to giver with the receiver's name
         const signedLink = `http://localhost:5173/resultat/${giverUser.token}`;
