@@ -1,7 +1,7 @@
 import { Event, User, Draw } from "../models/index.js";
 import jwt from "jsonwebtoken";
 import { sendEmail } from "../utils/sendEmail.js";
-import { draw } from "../utils/draw.js";
+import { draw }  from "../utils/draw.js";
 
 export default {
   async createEvent(req, res) {
@@ -18,7 +18,7 @@ export default {
       res.status(500).json({ message: "Internal server error" });
     }
   },
-  async createEventWithParticipants(req, res) {
+  async createEventWithParticipantsAndDraw(req, res) {
     const { name, date, participants, organizer_id } = req.body;
     try {
       const event = await Event.create({ name, date, organizer_id });
@@ -157,4 +157,24 @@ export default {
       res.status(500).json({ message: "Internal server error" });
     }
   },
+
+  async getResults(req, res){
+    const { token } = req.params;
+
+    try {
+      const decoded = jwt.verify(token, `${process.env.JWT_SECRET}`);
+      const email = decoded.email;
+  
+      // Assuming you have a method to find the Secret Santa match
+      const match = await findSecretSantaMatch(email);
+  
+      res.json((match));
+    } catch (error) {
+      console.error(error.message)
+      res.status(400).send('Invalid or expired token');
+    }
+  },
 };
+
+// Assuming this function is implemented elsewhere
+
