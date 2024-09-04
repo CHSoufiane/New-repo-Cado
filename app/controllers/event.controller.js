@@ -142,7 +142,9 @@ export default {
 
   async deleteEvent(req, res) {
     try {
-      const event = await Event.findByPk(req.params.id);
+      const { id }  = req.body
+      await Draw.destroy({ where: { event_id: id } });
+      const event = await Event.findByPk(id);
       if (!event) {
         return res.status(404).json({ message: "Event not found" });
       }
@@ -151,6 +153,7 @@ export default {
         message: ` Event: ${event.id} / ${event.name} deleted`,
       });
     } catch (error) {
+      console.error(error.message);
       res.status(500).json({ message: "Internal server error" });
     }
   },
