@@ -28,7 +28,11 @@ export default {
       for (const participant of participants) {
         let user = await User.findOne({ where: { email: participant.email } });
   
-        if (!user) {
+        if (user) {
+          const newToken = jwt.sign({ email: user.email }, process.env.JWT_SECRET);
+          user.token = newToken;
+          user.save(); // Update the token
+        } else {
           const token = jwt.sign({ email: participant.email }, process.env.JWT_SECRET);
           user = await User.create({
             name: participant.name,
@@ -58,9 +62,9 @@ export default {
           giver_id: giverUser.id,
           receiver_id: receiverUser.id
         });
-  
+        
         // Send email to giver with the receiver's name
-        const signedLink = `http://localhost:3000/view/${giverUser.token}`;
+        const signedLink = `http://localhost:5173/resultat/${giverUser.token}`;
         const subject = "Résultat du tirage au sort pour Cad'O";
         const html = `Bonjour ${giverUser.name}, tu dois offrir un cadeau à ${receiverUser.name}. Clique sur le lien pour voir les détails ${signedLink}`;
         sendEmail(giverUser.email, subject, html);
@@ -138,7 +142,9 @@ export default {
 
   async deleteEvent(req, res) {
     try {
-      const event = await Event.findByPk(req.params.id);
+      const { id }  = req.body
+      await Draw.destroy({ where: { event_id: id } });
+      const event = await Event.findByPk(id);
       if (!event) {
         return res.status(404).json({ message: "Event not found" });
       }
@@ -147,6 +153,7 @@ export default {
         message: ` Event: ${event.id} / ${event.name} deleted`,
       });
     } catch (error) {
+      console.error(error.message);
       res.status(500).json({ message: "Internal server error" });
     }
   },

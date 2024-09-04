@@ -10,7 +10,9 @@ router.post('/create-event', eventController.createEventWithParticipantsAndDraw)
 
 router.get('/events/:id', eventController.getOneEvent);
 router.put('/events/:id', eventController.updateEvent);
-router.delete('/events/:id', eventController.deleteEvent);
+
+router.delete('/delete-event', eventController.deleteEvent);
 router.get('/view/:token', eventController.getResults);
+
 
 export default router;
