@@ -64,7 +64,7 @@ export default {
         });
         
         // Send email to giver with the receiver's name
-        const signedLink = `http://localhost:5173/resultat/${giverUser.token}`;
+        const signedLink = `https://cadofront.zapto.org/resultat/${giverUser.token}`;
         const subject = "Résultat du tirage au sort pour Cad'O";
         const html = `Bonjour ${giverUser.name}, tu dois offrir un cadeau à ${receiverUser.name}. Clique sur le lien pour voir les détails ${signedLink}`;
         sendEmail(giverUser.email, subject, html);
