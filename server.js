@@ -21,7 +21,7 @@ const credentials = {
 const app = express();
 
 app.use(cors({
-    origin: 'http://localhost:5173', // Ajoutez ici l'origine de votre front-end
+    origin: ['http://localhost:5173', 'https://cadofront.zapto.org'], // Ajoutez ici l'origine de votre front-end
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true // Ensure credentials are included in requests
