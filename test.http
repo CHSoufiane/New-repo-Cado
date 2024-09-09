@@ -3,12 +3,30 @@
 @token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inlhbmlpcy43ODVAZ21haWwuY29tIiwiaWF0IjoxNzIwNDQxMTE2fQ.S1bL_8DPbXVrkmRstPiNWpuxoiMo_gJwvaVCcSrXiUY
 
 
-### DRAW
-GET {{endpoint}}/draw/73
+### CREATE DRAW
+POST {{endpoint}}/events/1/draw
+Content-Type: application/json
+
+### GET DRAW BY USER
+GET {{endpoint}}/draws/user/2
+Content-Type: application/json
+
+### GET A DRAW
+GET {{endpoint}}/draw/1
+Content-Type: application/json
+
+### GET ALL DRAWS
+GET {{endpoint}}/draws
+Content-Type: application/json
+
+
+
+
 
 
 ###ME
 GET {{endpoint}}/me
+Content-Type: application/json
 
 ###LOGIN
 POST {{endpoint}}/login
@@ -31,20 +49,26 @@ Content-Type: application/json
 
 
 
+
+
 ### USERS
 GET {{endpoint}}/users
+Content-Type: application/json
 
 ### GET ONE USER
+
+GET {{endpoint}}/users/7
+Content-Type: application/json
+
 GET {{endpoint}}/users/89
+
 
 ### CREATE USER
 POST {{endpoint}}/users
 Content-Type: application/json
 
-{
-  "name": "Yanis",
-  "email": "yazazdnis@gneeail.com"
-}
+{ "name": "essai", "email": "essai@gmail.com" }
+
 ### UPDATE USER
 
 PATCH {{endpoint}}/users/10
@@ -58,13 +82,24 @@ Content-Type: application/json
 
 ### DELETE USER
 
-DELETE {{endpoint}}/users/20
+DELETE {{endpoint}}/users/8
+Content-Type: application/json
+
+
 
 
 
 ### EVENTS
+
+GET {{endpoint}}/events
+Content-Type: application/json
+
 GET {{endpoint}}/events/148
 
+
+### GET ONE EVENT
+GET {{endpoint}}/events/1
+Content-Type: application/json
 
 ### CREATE EVENT
 
@@ -72,8 +107,35 @@ POST {{endpoint}}/events
 Content-Type: application/json
 
 {
-    "name": "Event 1",
+    "name": "bla bla bla bla",
+  "date": "2024-01-10",
+  "organizer_id": 4
+}
+### ADD PARTICIPANTS TO EVENT
+
+POST {{endpoint}}/create-event/
+Content-Type: application/json
+
+{
+    "name": "noel",
     "date": "2021-09-01",
+
+    "organizer_id": 1,
+    "participants": [
+    { "name": "Yanis", "email": "yanis@gmail.com" },
+    { "name": "Estelle", "email": "Estelle@gmail.com" }
+  ]
+}
+
+
+### GET PARTICIPANTS
+GET {{endpoint}}/events/1/participants
+Content-Type: application/json
+
+
+
+### UPDATE EVENT
+
     "organizer_id": 1
 
 }
@@ -87,8 +149,11 @@ Content-Type: application/json
 
 POST {{endpoint}}/events
 Content-Type: application/json
+}
+    "name": "Event 2",
+    "date": "2021-09-01",
+    "organizer_id": 1
 
-{
     "name": "Turlututu",
     "date": "2024-09-20",
     "organizer_id": 1,
@@ -108,4 +173,6 @@ Content-Type: application/json
 
 ### DELETE EVENT
 
-DELETE {{endpoint}}/events/54
+DELETE {{endpoint}}/events/5
+Content-Type: application/json
+

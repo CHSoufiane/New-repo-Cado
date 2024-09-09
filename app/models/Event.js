@@ -6,7 +6,7 @@ class Event extends Model {
         super.init(
             {
                 name: {
-                    type: DataTypes.STRING,
+                    type: DataTypes.INTEGER,
                     allowNull: false
                 },
                 date: {

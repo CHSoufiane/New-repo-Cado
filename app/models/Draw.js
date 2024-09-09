@@ -27,7 +27,9 @@ class Draw extends Model {
             model: "User",
             key: "id",
           },
-          allowNull: false,
+          allowNull: true,
+
+
         },
       },
       {
