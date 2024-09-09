@@ -5,12 +5,16 @@ import { draw } from "../utils/draw.js";
 
 export default {
   async createEvent(req, res) {
-    const { name, date, organizer_id } = req.body;
+    const { name, date, organizer_id, max_price } = req.body;
+    if (!name || !date || !organizer_id) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
     try {
       const event = await Event.create({
         name,
         date,
         organizer_id,
+        max_price,
       });
       return res.status(201).json(event);
     } catch (error) {
@@ -19,9 +23,12 @@ export default {
     }
   },
   async createEventWithParticipants(req, res) {
-    const { name, date, participants, organizer_id } = req.body;
+    const { name, date, participants, organizer_id, max_price } = req.body;
+    if (!name || !date || !organizer_id || !participants) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
     try {
-      const event = await Event.create({ name, date, organizer_id });
+      const event = await Event.create({ name, date, organizer_id, max_price });
   
       // Add participants to the event
       let eventUsers = [];
@@ -119,7 +126,7 @@ export default {
 
   async updateEvent(req, res) {
     const { id } = req.params;
-    const { name, date, organizer_id } = req.body;
+    const { name, date, organizer_id, max_price } = req.body;
     try {
       const event = await Event.findByPk(id);
       if (!event) {
@@ -130,6 +137,7 @@ export default {
         name,
         date,
         organizer_id,
+        max_price,
       });
       return res.status(200).json({ message: "Event updated", event });
     } catch (error) {

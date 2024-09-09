@@ -43,3 +43,5 @@ CREATE TABLE "event_user" (
 ALTER SEQUENCE "user_id_seq" RESTART WITH 1;
 ALTER SEQUENCE "event_id_seq" RESTART WITH 1;
 ALTER SEQUENCE "draw_id_seq" RESTART WITH 1;
+
+ALTER TABLE "event" ADD COLUMN "max_price" NUMERIC;
