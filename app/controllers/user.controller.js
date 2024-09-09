@@ -3,6 +3,8 @@ import Event from "../models/Event.js";
 import jwt from "jsonwebtoken";
 import { sendEmail } from "../utils/sendEmail.js";
 
+
+
 export default {
   async createUser(req, res) {
     const { name, email } = req.body;
@@ -69,7 +71,7 @@ export default {
   async updateUser(req, res) {
     const { id } = req.params;
     const { name, email, password } = req.body;
-
+    
     try {
       const user = await User.findByPk(id);
 

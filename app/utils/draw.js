@@ -1,9 +1,4 @@
-// import { Event, User, Draw } from "../models/index.js";
-// import sequelize from "../db/client-sequelize.js";
-
-
-
-  function shuffle(eventUser) {
+function shuffle(eventUser) {
     for (let i = eventUser.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [eventUser[i], eventUser[j]] = [eventUser[j], eventUser[i]];

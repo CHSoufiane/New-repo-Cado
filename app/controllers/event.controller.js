@@ -1,7 +1,7 @@
 import { Event, User, Draw } from "../models/index.js";
 import jwt from "jsonwebtoken";
 import { sendEmail } from "../utils/sendEmail.js";
-import { draw } from "../utils/draw.js";
+import { draw }  from "../utils/draw.js";
 
 export default {
   async createEvent(req, res) {
@@ -18,7 +18,7 @@ export default {
       res.status(500).json({ message: "Internal server error" });
     }
   },
-  async createEventWithParticipants(req, res) {
+  async createEventWithParticipantsAndDraw(req, res) {
     const { name, date, participants, organizer_id } = req.body;
     try {
       const event = await Event.create({ name, date, organizer_id });
@@ -28,7 +28,11 @@ export default {
       for (const participant of participants) {
         let user = await User.findOne({ where: { email: participant.email } });
   
-        if (!user) {
+        if (user) {
+          const newToken = jwt.sign({ email: user.email }, process.env.JWT_SECRET);
+          user.token = newToken;
+          user.save(); // Update the token
+        } else {
           const token = jwt.sign({ email: participant.email }, process.env.JWT_SECRET);
           user = await User.create({
             name: participant.name,
@@ -58,7 +62,6 @@ export default {
           giver_id: giverUser.id,
           receiver_id: receiverUser.id
         });
-        
         
         // Send email to giver with the receiver's name
         const signedLink = `http://localhost:5173/resultat/${giverUser.token}`;
@@ -139,7 +142,9 @@ export default {
 
   async deleteEvent(req, res) {
     try {
-      const event = await Event.findByPk(req.params.id);
+      const { id }  = req.body
+      await Draw.destroy({ where: { event_id: id } });
+      const event = await Event.findByPk(id);
       if (!event) {
         return res.status(404).json({ message: "Event not found" });
       }
@@ -148,7 +153,28 @@ export default {
         message: ` Event: ${event.id} / ${event.name} deleted`,
       });
     } catch (error) {
+      console.error(error.message);
       res.status(500).json({ message: "Internal server error" });
     }
   },
+
+  async getResults(req, res){
+    const { token } = req.params;
+
+    try {
+      const decoded = jwt.verify(token, `${process.env.JWT_SECRET}`);
+      const email = decoded.email;
+  
+      // Assuming you have a method to find the Secret Santa match
+      const match = await findSecretSantaMatch(email);
+  
+      res.json((match));
+    } catch (error) {
+      console.error(error.message)
+      res.status(400).send('Invalid or expired token');
+    }
+  },
 };
+
+// Assuming this function is implemented elsewhere
+
