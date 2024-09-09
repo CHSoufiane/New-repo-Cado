@@ -35,9 +35,13 @@ CREATE TABLE "draw" (
 CREATE TABLE "event_user" (
     "event_id" INTEGER NOT NULL REFERENCES "event"("id") ON DELETE CASCADE,
     "user_id" INTEGER NOT NULL REFERENCES "user"("id") ON DELETE CASCADE,
+    "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
+    "updated_at" TIMESTAMPTZ,
     PRIMARY KEY ("event_id", "user_id")
 );
 
 ALTER SEQUENCE "user_id_seq" RESTART WITH 1;
 ALTER SEQUENCE "event_id_seq" RESTART WITH 1;
 ALTER SEQUENCE "draw_id_seq" RESTART WITH 1;
+
+ALTER TABLE "event" ADD COLUMN "max_price" NUMERIC;

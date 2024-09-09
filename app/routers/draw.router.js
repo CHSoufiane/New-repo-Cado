@@ -11,4 +11,8 @@ router.get('/draws/user/:id', drawController.getReceiverFromAnEvent)
 router.get('/draws/:id', drawController.getOneDraw);
 router.delete('/draws/:id', drawController.deleteDraw);
 
+router.get('/draw/:id', drawController.getParticipantsFromAnEvent);
+router.get('/resultat/:token', drawController.getDrawPair);
+
+
 export default router;

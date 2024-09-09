@@ -13,7 +13,6 @@ class Draw extends Model {
           },
           allowNull: false,
         },
-
         giver_id: {
           type: DataTypes.INTEGER,
           references: {
@@ -22,7 +21,6 @@ class Draw extends Model {
           },
           allowNull: false,
         },
-
         receiver_id: {
           type: DataTypes.INTEGER,
           references: {
@@ -30,6 +28,8 @@ class Draw extends Model {
             key: "id",
           },
           allowNull: true,
+
+
         },
       },
       {

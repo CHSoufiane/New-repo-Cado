@@ -20,6 +20,7 @@ class Event_user extends Model {
             references: { model: 'User', key: 'id' },
             allowNull: false, 
           },
+
         },
         {
           sequelize,

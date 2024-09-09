@@ -56,8 +56,12 @@ GET {{endpoint}}/users
 Content-Type: application/json
 
 ### GET ONE USER
+
 GET {{endpoint}}/users/7
 Content-Type: application/json
+
+GET {{endpoint}}/users/89
+
 
 ### CREATE USER
 POST {{endpoint}}/users
@@ -67,7 +71,7 @@ Content-Type: application/json
 
 ### UPDATE USER
 
-PUT {{endpoint}}/users/10
+PATCH {{endpoint}}/users/10
 Content-Type: application/json
 
 {
@@ -86,8 +90,12 @@ Content-Type: application/json
 
 
 ### EVENTS
+
 GET {{endpoint}}/events
 Content-Type: application/json
+
+GET {{endpoint}}/events/148
+
 
 ### GET ONE EVENT
 GET {{endpoint}}/events/1
@@ -111,6 +119,7 @@ Content-Type: application/json
 {
     "name": "noel",
     "date": "2021-09-01",
+
     "organizer_id": 1,
     "participants": [
     { "name": "Yanis", "email": "yanis@gmail.com" },
@@ -127,13 +136,39 @@ Content-Type: application/json
 
 ### UPDATE EVENT
 
-PUT {{endpoint}}/events/1
+    "organizer_id": 1
+
+}
+
+### GET EVENT
+
+GET {{endpoint}}/events/7
 Content-Type: application/json
 
-{
+### CREATE EVENT
+
+POST {{endpoint}}/events
+Content-Type: application/json
+}
     "name": "Event 2",
     "date": "2021-09-01",
     "organizer_id": 1
+
+    "name": "Turlututu",
+    "date": "2024-09-20",
+    "organizer_id": 1,
+    "participants": [3, 1, 4],
+    "max_price": 20
+}
+
+
+### UPDATE
+
+PATCH {{endpoint}}/events/7
+Content-Type: application/json
+
+{
+    "name": "Remise de diplômes"
 }
 
 ### DELETE EVENT

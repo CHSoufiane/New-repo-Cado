@@ -6,6 +6,30 @@ import Draw from "./Draw.js";
 User.hasMany(Event, {
   foreignKey: "organizer_id",
   as: "events"
+  
+});
+
+User.belongsToMany(Event, {
+  as: "participations",
+  through: Event_user,
+  foreignKey: "user_id",
+  otherKey: "event_id"
+});
+
+User.hasMany(Event_user, {
+  foreignKey: 'user_id',
+  as: 'users'
+});
+
+User.hasMany(Draw, {
+  foreignKey: "giver_id",
+  as: "givenDraws"
+});
+
+User.hasMany(Draw, {
+  foreignKey: "receiver_id",
+  as: "receivedDraws"
+
 });
 
 User.belongsToMany(Event, {
@@ -48,14 +72,22 @@ Event.hasMany(Draw, {
 
 Draw.belongsTo(User, {
   as: "giver",
+
   foreignKey: "giver_id",
   AS:"giver"
+
+  foreignKey: "giver_id"
+
 });
 
 Draw.belongsTo(User, {
   as: "receiver",
+
   foreignKey: "receiver_id",
   as: "receiver"
+
+  foreignKey: "receiver_id"
+
 });
 
 Draw.belongsTo(Event, { 
