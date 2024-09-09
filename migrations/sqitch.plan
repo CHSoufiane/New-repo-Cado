@@ -4,3 +4,4 @@
 
 01-create_tables 2024-07-02T08:18:48Z Etudiant O'clock <student@teleporter> # create tables
 02-seeding 2024-07-02T08:28:58Z Yanis <Yanis.lannabi@oclock.school> # seeding script
+03-modify-structure 2024-07-10T09:30:48Z Yanis <Yanis.lannabi@oclock.school> # add createdAt updateAt in event_user

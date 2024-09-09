@@ -1,0 +1,93 @@
+@endpoint=http://localhost:{{$dotenv PORT}}
+
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inlhbmlpcy43ODVAZ21haWwuY29tIiwiaWF0IjoxNzIwNDQxMTE2fQ.S1bL_8DPbXVrkmRstPiNWpuxoiMo_gJwvaVCcSrXiUY
+
+
+### DRAW
+GET {{endpoint}}/draw/73
+
+
+###ME
+GET {{endpoint}}/me
+
+###LOGIN
+POST {{endpoint}}/login
+Content-Type: application/json
+
+{
+  "email": "yaniis.785@gmail.com",
+  "password": "test"
+}
+
+### REGISTER
+POST {{endpoint}}/register
+Content-Type: application/json
+
+{
+  "name": "Yanis",
+  "email": "yaniis..785@gmail.com",
+  "password": "test"
+}
+
+
+
+### USERS
+GET {{endpoint}}/users
+
+### GET ONE USER
+GET {{endpoint}}/users/89
+
+### CREATE USER
+POST {{endpoint}}/users
+Content-Type: application/json
+
+{
+  "name": "Yanis",
+  "email": "yazazdnis@gneeail.com"
+}
+### UPDATE USER
+
+PUT {{endpoint}}/users/10
+Content-Type: application/json
+
+{
+  "name": "Joheeaen Doe",
+  "email": "john.doe@test.com",
+  "password": "teseaet"
+}
+
+### DELETE USER
+
+DELETE {{endpoint}}/users/20
+
+
+
+### EVENTS
+GET {{endpoint}}/events/148
+
+
+### CREATE EVENT
+
+POST {{endpoint}}/events
+Content-Type: application/json
+
+{
+    "name": "Event 1",
+    "date": "2021-09-01",
+    "organizer_id": 1
+}
+
+### UPDATE EVENT
+
+PUT {{endpoint}}/events/1
+Content-Type: application/json
+
+{
+    "name": "Event 42",
+    "date": "2021-09-01",
+    "organizer_id": 3
+}
+
+### DELETE EVENT
+
+DELETE {{endpoint}}/events/54

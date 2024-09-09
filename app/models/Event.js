@@ -1,11 +1,10 @@
 import { Model, DataTypes } from 'sequelize';
-import sequelize from './db/client-sequelize.js';
+import sequelize from '../db/client-sequelize.js';
 
 class Event extends Model {
     static init(sequelize) {
         super.init(
             {
-                // Define the model attributes
                 name: {
                     type: DataTypes.STRING,
                     allowNull: false
@@ -13,7 +12,15 @@ class Event extends Model {
                 date: {
                     type: DataTypes.DATE,
                     allowNull: false,
-                    
+                },
+                organizer_id: {
+                    type: DataTypes.INTEGER,
+                    references: {
+                        model: 'User',
+                        key: 'id'
+                    },
+                    allowNull: false,
+                    onDelete: 'CASCADE'
                 }
             },
             {
