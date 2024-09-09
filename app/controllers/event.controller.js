@@ -58,9 +58,10 @@ export default {
           giver_id: giverUser.id,
           receiver_id: receiverUser.id
         });
-  
+        
+        
         // Send email to giver with the receiver's name
-        const signedLink = `http://localhost:3000/view/${giverUser.token}`;
+        const signedLink = `http://localhost:5173/resultat/${giverUser.token}`;
         const subject = "Résultat du tirage au sort pour Cad'O";
         const html = `Bonjour ${giverUser.name}, tu dois offrir un cadeau à ${receiverUser.name}. Clique sur le lien pour voir les détails ${signedLink}`;
         sendEmail(giverUser.email, subject, html);
