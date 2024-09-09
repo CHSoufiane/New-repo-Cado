@@ -11,29 +11,26 @@ export default {
     try {
       // Extract user data from request body
       const schema = Joi.object({
-
         name: Joi.string()
-        .min(3) // min length 3 char
-        .max(30) // maximum length 30 char
-        .pattern(new RegExp('^[a-zA-Z]+$')) // only letters
-        .required(),
-    
-        password : Joi.string()
-        .pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})')) // password pattern with 8 char min, 1 uppercase, 1 lowercase, 1 number, 1 special char
-        .required(),
-    
-        confirmPassword : Joi.ref('password'),
-    
-        email : Joi.string()
-        .email({ tlds: { allow: false } }) // valid email format 
-        .required(),
-    });
+          .min(3) // min length 3 char
+          .max(30) // maximum length 30 char
+          .pattern(new RegExp('^[a-zA-Z]+$')) // only letters
+          .required(),
+        password: Joi.string()
+          .pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})')) // password pattern
+          .required(),
+        confirmPassword: Joi.ref('password'),
+        email: Joi.string()
+          .email({ tlds: { allow: false } }) // valid email format 
+          .required(),
+      });
 
       const { error, value } = schema.validate(req.body);
       if (error) {
         console.log(error.details[0].message);
         return res.status(400).json(error.details[0].message);
       }
+
       const { name, email, password } = value;
 
       // Check if user already exists
@@ -41,14 +38,14 @@ export default {
         where: { email },
       });
       if (existingUser) {
-        return res.status(400).json({ message: "email already exists" });
+        return res.status(400).json({ message: "Email already exists" });
       }
 
       // Hash the password
       const hashedPassword = await hash(password, 10);
 
       // Generate a JWT token linked to the email
-      const token = jwt.sign({ email: email }, `${process.env.JWT_SECRET_KEY}`);
+      const token = jwt.sign({ email: email }, process.env.JWT_SECRET_KEY);
 
       // Create a new user
       const user = await User.create({
@@ -76,10 +73,11 @@ export default {
     try {
       const { email, password } = req.body;
 
+      console.log("Email received:", email);
+      console.log("Password received:", password);
+
       if (!email || !password) {
-        return res
-          .status(400)
-          .json({ message: "Email and password are required" });
+        return res.status(400).json({ message: "Email and password are required" });
       }
 
       const user = await User.findOne({ where: { email } });
@@ -87,14 +85,14 @@ export default {
         return res.status(404).json({ message: "Invalid credentials" });
       }
 
+      // Compare the provided password with the hashed password stored in the database
       const isPasswordValid = await compare(password, user.password);
       if (!isPasswordValid) {
         return res.status(401).json({ message: "Invalid credentials" });
       }
 
-
-      // If login successful generate a JWT
-      const token = jwt.sign({id: user.id}, process.env.JWT_SECRET, {
+      // If login successful, generate a JWT
+      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
         expiresIn: "24h",
       });
 
@@ -113,3 +111,4 @@ export default {
     }
   },
 };
+

@@ -13,11 +13,11 @@ import limiter from './app/middlewares/rateLimit.js';
 const app = express();
 
 app.use(cors({
-    origin: ['http://localhost:5173', 'http://127.0.0.1:5173'], // Ajoutez ici l'origine de votre front-end
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
+    methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true // Ensure credentials are included in requests
-}));
+    credentials: true
+  }));
 
 app.use(limiter);
 app.use(cookieParser());
@@ -34,3 +34,5 @@ app.use(me_router);
 app.listen(3000, () => {
     console.log(`Server is running on ${process.env.BASE_URL}:${process.env.PORT}`);
 });
+
+
