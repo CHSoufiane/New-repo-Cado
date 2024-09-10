@@ -22,10 +22,6 @@ class Event extends Model {
                     allowNull: false,
                     onDelete: 'CASCADE'
                 },
-                max_price: {
-                    type: DataTypes.INTEGER,
-                    allowNull: true
-                }
             },
             {
                 sequelize,

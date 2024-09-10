@@ -11,7 +11,6 @@ export default {
         .status(400)
         .json({ message: "Please provide all required fields" });
     }
-
     try {
       const existingUser = await User.findOne({ where: { email } });
 
@@ -19,11 +18,8 @@ export default {
         return res.status(400).json({ message: "Email already registered" });
       }
 
-      // Generate a JWT token linked to the email
       const token = jwt.sign({ email: email }, `${process.env.JWT_SECRET_KEY}`);
 
-      // Use the token to create a new user w/o password
-      // Used to register invited users
       const user = await User.create({
         name,
         email,
@@ -31,7 +27,6 @@ export default {
         token: token,
       });
 
-      // Send an email to the new user
       const subject = "Vous avez été invité à participer sur Cad'O";
       const html = `Bonjour ${user.name}, tu as été invité à participer sur Cad'O! ! Clique sur le lien pour voir le résultat du tirage au sort`;
       sendEmail(user.email, subject, html);
