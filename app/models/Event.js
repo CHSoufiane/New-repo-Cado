@@ -6,7 +6,7 @@ class Event extends Model {
         super.init(
             {
                 name: {
-                    type: DataTypes.INTEGER,
+                    type: DataTypes.STRING,
                     allowNull: false
                 },
                 date: {
@@ -21,7 +21,7 @@ class Event extends Model {
                     },
                     allowNull: false,
                     onDelete: 'CASCADE'
-                },
+                }
             },
             {
                 sequelize,

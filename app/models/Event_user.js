@@ -15,12 +15,6 @@ class Event_user extends Model {
             references: { model: 'User', key: 'id' },
             allowNull: false,
           },
-          receiver_id: {
-            type: DataTypes.INTEGER,
-            references: { model: 'User', key: 'id' },
-            allowNull: false, 
-          },
-
         },
         {
           sequelize,

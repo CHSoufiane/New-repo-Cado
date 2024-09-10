@@ -11,6 +11,7 @@ export default {
         .status(400)
         .json({ message: "Please provide all required fields" });
     }
+
     try {
       const existingUser = await User.findOne({ where: { email } });
 
@@ -18,8 +19,11 @@ export default {
         return res.status(400).json({ message: "Email already registered" });
       }
 
+      // Generate a JWT token linked to the email
       const token = jwt.sign({ email: email }, `${process.env.JWT_SECRET_KEY}`);
 
+      // Use the token to create a new user w/o password
+      // Used to register invited users
       const user = await User.create({
         name,
         email,
@@ -27,6 +31,7 @@ export default {
         token: token,
       });
 
+      // Send an email to the new user
       const subject = "Vous avez été invité à participer sur Cad'O";
       const html = `Bonjour ${user.name}, tu as été invité à participer sur Cad'O! ! Clique sur le lien pour voir le résultat du tirage au sort`;
       sendEmail(user.email, subject, html);
@@ -104,4 +109,50 @@ export default {
       return res.status(500).json({ message: "Internal server error" });
     }
   },
+
+async getMe(req, res) {
+  try {
+    // Récupère l'utilisateur avec ses événements et les participants de chaque événement
+    const user = await User.findByPk(req.user.id, {
+      include: {
+        model: Event,
+        as: 'events',
+        include: {
+          model: User,
+          as: 'participants',
+          through: { attributes: [] }, // Ignorer les attributs de la table de jonction
+          attributes: ['name', 'email'], // Attributs à récupérer pour les participants
+        },
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    console.error('Error:', error.message);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+},
+
+async updateMe (req, res) {
+
+  if (!req.user || !req.user.id) {
+    return res.status(400).json({ message: 'Utilisateur non authentifié ou ID manquant' });
+  }
+
+  const updateUser = async (data) => {
+    return await User.update(data, {where: {id: req.user.id}});
+  }
+  try {
+    const updatedUser = await updateUser(req.body);
+    res.json(updatedUser);
+  } catch (error) {
+    console.error('Erreur lors de la mise à jour:', error);
+    res.status(500).json({ message: 'Erreur lors de la mise à jour' });
+  }
+}
 };

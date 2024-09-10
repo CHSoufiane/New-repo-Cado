@@ -6,7 +6,7 @@ import bcrypt from "bcrypt";
 export default {
     async getMe(req, res) {
     try {
-      // Get the user and his events with teh related participants
+
       const user = await User.findByPk(req.user.id, {
         include: {
           model: Event,
@@ -14,8 +14,8 @@ export default {
           include: {
             model: User,
             as: 'participants',
-            through: { attributes: [] }, // ignore the attributes of the join table
-            attributes: ['name', 'email'], // attributes to retrieve for the participants
+            through: { attributes: [] },
+            attributes: ['name', 'email'],
           },
         },
       });

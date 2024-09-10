@@ -6,16 +6,16 @@ class User extends Model {
         super.init(
             {
                 name: {
-                    type: DataTypes.INTEGER,
+                    type: DataTypes.STRING,
                     allowNull: false
                 },
                 email: {
-                    type: DataTypes.INTEGER,
+                    type: DataTypes.STRING,
                     allowNull: false,
                     unique: true
                 },
                 password: {
-                    type: DataTypes.INTEGER,
+                    type: DataTypes.STRING,
                     allowNull: true
                 },
                 is_registered: {
@@ -24,7 +24,7 @@ class User extends Model {
                     defaultValue: false
                 },
                 token: {
-                    type: DataTypes.INTEGER,
+                    type: DataTypes.STRING,
                     allowNull: false
                 }
             },
