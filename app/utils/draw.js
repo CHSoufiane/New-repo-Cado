@@ -1,8 +1,3 @@
-// import { Event, User, Draw } from "../models/index.js";
-// import sequelize from "../db/client-sequelize.js";
-
-
-
 function shuffle(eventUser) {
   for (let i = eventUser.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -11,23 +6,24 @@ function shuffle(eventUser) {
   return eventUser;
 }
 
-  // be sure to have a minimum of users
+  // Être sur d'avoir au moins deux participants
 function draw(eventUser) {
   if (eventUser.length < 2) {
-      throw new Error("désolé, il doit y avoir au minimum 2 personnes pour faire un tirage");
+      throw new Error
+      ("désolé, il doit y avoir au minimum 2 participants");
   }
 
-  let givers = [...eventUser]; // Spread Syntax
+  let givers = [...eventUser];
   let receivers = shuffle([...eventUser]);
 
-  // No one can give a gift to himself
+  // Un utilisateur ne peut pas s'offrir de cadeau
   for (let i = 0; i < givers.length; i++) {
       if (givers[i] === receivers[i]) {
           return draw(eventUser);
       }
   }
 
-  // 2 users can't give a gift to each other
+  // 2 utilisateurs ne peuvent pas s'offrir de cadeaux
   for (let i = 0; i < givers.length; i++) {
       for (let j = 0; j < receivers.length; j++) {
           if (givers[i] === receivers[j] && givers[j] === receivers[i]) {
@@ -35,7 +31,7 @@ function draw(eventUser) {
           }
       }
   }
-  // configure a pair of giver and receiver
+  // Créer les paires donneurs / receveurs
   let pairs = {};
   for (let i = 0; i < givers.length; i++) {
       pairs[givers[i]] = receivers[i];

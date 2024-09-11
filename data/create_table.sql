@@ -4,18 +4,18 @@ DROP TABLE IF EXISTS "user", "event", "draw", "event_user";
 
 CREATE TABLE "user" (
     "id" INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    "name" TEXT NOT NULL,
-    "email" TEXT NOT NULL,
-    "password" TEXT,
+    "name" VARCHAR NOT NULL,
+    "email" VARCHAR NOT NULL,
+    "password" VARCHAR,
     "is_registered" BOOLEAN NOT NULL DEFAULT FALSE,
-    "token" TEXT NOT NULL,
+    "token" VARCHAR NOT NULL,
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
     "updated_at" TIMESTAMPTZ
 );
 
 CREATE TABLE "event" (
     "id" INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    "name" TEXT NOT NULL,
+    "name" VARCHAR NOT NULL,
     "date" DATE NOT NULL,
     "organizer_id" INTEGER NOT NULL REFERENCES "user"("id"),
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
