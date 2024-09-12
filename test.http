@@ -1,7 +1,6 @@
 @endpoint=http://localhost:{{$dotenv PORT}}
 
-@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inlhbmlpcy43ODVAZ21haWwuY29tIiwiaWF0IjoxNzIwNDQxMTE2fQ.S1bL_8DPbXVrkmRstPiNWpuxoiMo_gJwvaVCcSrXiUY
-
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vdS5zb3VmaWFuZUBnbWFpbC5jb20iLCJpYXQiOjE3MjYwODc2Mzh9.Oh0lTmeoeZBGmR3cfU0fd9jpN7Tiqeo7DZGFZ_m0ZA4
 
 ### CREATE DRAW
 POST {{endpoint}}/events/1/draw
@@ -71,7 +70,7 @@ Content-Type: application/json
 
 ### UPDATE USER
 
-PATCH {{endpoint}}/users/10
+PATCH {{endpoint}}/users/1
 Content-Type: application/json
 
 {
