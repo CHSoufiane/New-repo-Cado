@@ -23,7 +23,7 @@ export default {
     try {
       const event = await Event.create({ name, date, organizer_id });
   
-
+      // Add participants to the event
       let eventUsers = [];
       for (const participant of participants) {
         let user = await User.findOne({ where: { email: participant.email } });
@@ -38,24 +38,29 @@ export default {
           });
         }
   
-
+        // Link user to the Event
         await event.addParticipant(user);
-        eventUsers.push(user);
+        eventUsers.push(user); // Collect user for the draw
       }
-
-      const userNames = eventUsers.map(user => user.name);
+  
+      // Perform the draw
+      const userNames = eventUsers.map(user => user.name); // Use names for the draw
       const pairs = draw(userNames);
   
+      // Save the pairs in the Draw table and send emails
       for (let [giver, receiver] of Object.entries(pairs)) {
         const giverUser = eventUsers.find(user => user.name === giver);
         const receiverUser = eventUsers.find(user => user.name === receiver);
   
+        // Save the draw pair in the Draw table
         await Draw.create({
           event_id: event.id,
           giver_id: giverUser.id,
           receiver_id: receiverUser.id
         });
         
+        
+        // Send email to giver with the receiver's name
         const signedLink = `http://localhost:5173/resultat/${giverUser.token}`;
         const subject = "Résultat du tirage au sort pour Cad'O";
         const html = `Bonjour ${giverUser.name}, tu dois offrir un cadeau à ${receiverUser.name}. Clique sur le lien pour voir les détails ${signedLink}`;

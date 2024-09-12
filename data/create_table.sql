@@ -35,7 +35,6 @@ CREATE TABLE "draw" (
 CREATE TABLE "event_user" (
     "event_id" INTEGER NOT NULL REFERENCES "event"("id") ON DELETE CASCADE,
     "user_id" INTEGER NOT NULL REFERENCES "user"("id") ON DELETE CASCADE,
-    "receiver_id" INTEGER NOT NULL REFERENCES "user"("id") ON DELETE CASCADE,
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
     "updated_at" TIMESTAMPTZ,
     PRIMARY KEY ("event_id", "user_id")
